@@ -16,9 +16,7 @@ public class SignupRequest {
     @Email
     private String email;
 
-    @NotBlank
-    @Size(min = 3, max = 80)
-    private String image;
+    private String image = "profil.png";
 
     private Set<String> role;
 

@@ -3,6 +3,7 @@ package ml.geekdjenika.apiinfrabaana.Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -51,6 +52,12 @@ public class Utilisateur {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.image = image;
+    }
+
+    public Utilisateur(String username, String email, String image) {
+        this.username = username;
+        this.email = email;
         this.image = image;
     }
 }
