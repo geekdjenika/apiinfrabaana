@@ -90,7 +90,6 @@ public class AuthController {
                 encoder.encode(signUpRequest.getPassword()),signUpRequest.getImage());
 
 
-        System.out.println(utilisateur);
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
