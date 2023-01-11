@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.*;
 
 @Data
 @Entity
@@ -22,8 +22,12 @@ public class Question {
 
     private String reponse;
 
-    @OneToMany
-    Collection<Reponse> mauvaisesReponses;
+    @OneToMany(mappedBy="question")
+    private List<Reponse> mauvaisesReponses=new ArrayList<>();
+
+    /*public <E> Question(String question, String reponse, Set<Reponse> reponses) {
+
+    }*/
 
     public Question(long id) {
         this.id = id;

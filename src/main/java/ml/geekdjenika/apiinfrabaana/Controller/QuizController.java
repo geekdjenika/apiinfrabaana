@@ -2,16 +2,12 @@ package ml.geekdjenika.apiinfrabaana.Controller;
 
 import ml.geekdjenika.apiinfrabaana.Model.Question;
 import ml.geekdjenika.apiinfrabaana.Model.Reponse;
-import ml.geekdjenika.apiinfrabaana.Repository.ReponseRepository;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.QuestionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/quiz")
@@ -36,6 +32,12 @@ public class QuizController {
         return questionService.getQuestion(qname);
     }
 
+    @GetMapping("/questionid/{id}")
+    @PostAuthorize("hasAuthority('USER')")
+    public Optional<Question> getQuestion(@PathVariable long id) {
+        return questionService.getQuestion(id);
+    }
+
     @PostMapping("/question/add")
     @PostAuthorize("hasAuthority('ADMIN')")
     public Question addQuestion(@RequestBody Question question) {
@@ -45,6 +47,7 @@ public class QuizController {
     @PutMapping("/question/update/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
     public Optional<Question> updateQuestion(@RequestBody Question question, @PathVariable long id) {
+        System.out.println(question.getMauvaisesReponses());
         return questionService.updateQuestion(question, id);
     }
 

@@ -1,5 +1,6 @@
 package ml.geekdjenika.apiinfrabaana.Service.ServiceImpl;
 
+import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Model.Question;
 import ml.geekdjenika.apiinfrabaana.Model.Reponse;
 import ml.geekdjenika.apiinfrabaana.Repository.QuestionRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@ToString
 @Service
 public class QuestionServiceImpl implements QuestionService{
 
@@ -30,17 +32,29 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
+    public Optional<Question> getQuestion(long id) {
+        return questionRepository.findById(id);
+    }
+
+    @Override
     public Question addQuestion(Question question) {
         return questionRepository.save(question);
     }
 
     @Override
     public Optional<Question> updateQuestion(Question question, long id) {
+        List<Reponse> mauvaisesreponses = question.getMauvaisesReponses();
         return questionRepository.findById(id).map(
                 question1 -> {
                     question1.setQuestion(question.getQuestion());
                     question1.setReponse(question.getReponse());
-                    question1.setMauvaisesReponses(question.getMauvaisesReponses());
+                    if (!mauvaisesreponses.isEmpty()) {
+                        for (Reponse reponse :
+                                mauvaisesreponses) {
+                            question1.getMauvaisesReponses().add(reponse);
+                        }
+                    }
+
                     return questionRepository.save(question1);
                 }
         );
@@ -59,8 +73,9 @@ public class QuestionServiceImpl implements QuestionService{
         for (Reponse reponse:
              reponses) {
             reponseRepository.save(reponse);
+            question.getMauvaisesReponses().add(reponse);
         }
-        question.setMauvaisesReponses(reponses);
+        //question.setMauvaisesReponses(reponses);
         questionRepository.save(question);
     }
 }
