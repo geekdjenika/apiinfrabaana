@@ -1,20 +1,15 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
-import io.jsonwebtoken.Header;
 import ml.geekdjenika.apiinfrabaana.Model.Question;
+import ml.geekdjenika.apiinfrabaana.Model.Quiz;
 import ml.geekdjenika.apiinfrabaana.Model.Reponse;
 import ml.geekdjenika.apiinfrabaana.Model.Utilisateur;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.QuestionService;
-import ml.geekdjenika.apiinfrabaana.payload.request.response.JwtResponse;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
+import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.QuizService;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
@@ -23,14 +18,16 @@ public class QuizController {
 
 
     private final QuestionService questionService;
+    private final QuizService quizService;
 
-    public QuizController(QuestionService questionService) {
+    public QuizController(QuestionService questionService, QuizService quizService) {
         this.questionService = questionService;
+        this.quizService = quizService;
     }
 
     @GetMapping("/questions")
     @PostAuthorize("hasAuthority('USER')")
-    public List<Question> getAll() {
+    public List<Question> getAllQuestion() {
         return questionService.getAllQuestions();
     }
 
@@ -96,13 +93,68 @@ public class QuizController {
         mauvaisesReponses.add(new Reponse(reponse2,new Question(id)));
         mauvaisesReponses.add(new Reponse(reponse3,new Question(id)));
 
-        /*mauvaisesReponses.add(new Reponse(reponse1));
-        mauvaisesReponses.add(new Reponse(reponse2));
-        mauvaisesReponses.add(new Reponse(reponse3));*/
-
         questionService.addReponses(id,mauvaisesReponses);
         return "Réponses ajoutées avec succès !";
 
+    }
+    // #QUIZ####################    Q#U#I#Z   ####################QUIZ#
+    @PostMapping("/add")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public Quiz addQuiz(@RequestBody Quiz quiz) {
+        return quizService.addQuiz(quiz);
+    }
+
+    @GetMapping("/get/{id}")
+    @PostAuthorize("hasAuthority('USER')")
+    public Quiz getQuiz(@PathVariable long id) {
+        return quizService.getQuiz(id);
+    }
+
+    @GetMapping("/get/all")
+    @PostAuthorize("hasAuthority('USER')")
+    public List<Quiz> getAllQuiz(){
+        return quizService.getAllQuiz();
+    }
+
+    @PostMapping("/add/{id}")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public String addQuesstionToQuiz(@Param("question") String question, @PathVariable long id) {
+        quizService.addQuestionToQuiz(question,id);
+        return question + " ajoutée au quiz avec succès !";
+    }
+
+    @PostMapping("/addquestion/{id}")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public String addQuesstionToQuiz(@RequestBody Question question, @PathVariable long id) {
+        quizService.addQuestionToQuiz(question,id);
+        return question + " ajoutée au quiz avec succès !";
+    }
+
+    @PostMapping("/addquestions/{id}")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public String addQuesstionToQuiz(@Param("questions") List<String> question, @PathVariable long id) {
+        quizService.addQuestionsToQuiz(question,id);
+        return question + " ajoutée au quiz avec succès !";
+    }
+
+    @PostMapping("/update/{id}")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public Optional<Quiz> updateQuiz(@RequestBody Quiz quiz, @PathVariable long id){
+        return quizService.updateQuiz(quiz, id);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public String deleteQuiz(@PathVariable long id) {
+        quizService.deleteQuiz(id);
+        return "Quiz supprimé avec succès !";
+    }
+
+    @PostAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/removequestion/{id}")
+    public String removeQuestionToQuiz(@Param("question") String question, @PathVariable long id) {
+        quizService.removeQuestionToQuiz(question,id);
+        return "Question supprimée de " + quizService.getQuiz(id).getLabel();
     }
 
 }
