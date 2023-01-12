@@ -24,4 +24,7 @@ public class Quiz {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Question> questions = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<Utilisateur> utilisateurs = new ArrayList<>();
+
 }

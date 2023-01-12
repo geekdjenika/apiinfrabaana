@@ -98,9 +98,10 @@ public class QuizController {
 
     }
     // #QUIZ####################    Q#U#I#Z   ####################QUIZ#
-    @PostMapping("/add")
+    @PostMapping("/add/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public Quiz addQuiz(@RequestBody Quiz quiz) {
+    public Quiz addQuiz(@RequestBody Quiz quiz, @PathVariable long id) {
+        //quiz.getUtilisateurs().add();
         return quizService.addQuiz(quiz);
     }
 
