@@ -46,20 +46,38 @@ public class QuizController {
 
     @PutMapping("/question/update/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public Optional<Question> updateQuestion(@RequestBody Question question, @PathVariable long id) {
-        System.out.println(question.getMauvaisesReponses());
-        return questionService.updateQuestion(question, id);
+    public Optional<Question> updateQuestion(
+            @Param("question") String question,
+            @Param("reponse") String reponse,
+            @Param("reponse1") String reponse1,
+            @Param("reponse2") String reponse2,
+            @Param("reponse3") String reponse3,
+            @PathVariable long id) {
+        Question questionamodifier = new Question();
+
+        questionamodifier.setQuestion(question);
+        questionamodifier.setReponse(reponse);
+        if (reponse1.isEmpty()||reponse2.isEmpty()||reponse3.isEmpty()) questionamodifier.setMauvaisesReponses(null);
+        else {
+            questionamodifier.getMauvaisesReponses().add(new Reponse(reponse1));
+            questionamodifier.getMauvaisesReponses().add(new Reponse(reponse2));
+            questionamodifier.getMauvaisesReponses().add(new Reponse(reponse3));
+        }
+
+
+        return questionService.updateQuestion(questionamodifier, id);
     }
 
     @DeleteMapping("/question/delete/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public void deleteQuestion(@PathVariable long id) {
+    public String deleteQuestion(@PathVariable long id) {
         questionService.deleteQuestion(id);
+        return "Question supprimée avec succès !";
     }
 
     @PostMapping("/reponse/add/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public void addReponses(
+    public String addReponses(
             @PathVariable long id,
             @Param("reponse1") String reponse1,
             @Param("reponse2") String reponse2,
@@ -74,6 +92,7 @@ public class QuizController {
         mauvaisesReponses.add(new Reponse(reponse3));*/
 
         questionService.addReponses(id,mauvaisesReponses);
+        return "Réponses ajoutées avec succès !";
 
     }
 

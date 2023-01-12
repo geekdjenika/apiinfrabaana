@@ -8,11 +8,13 @@ import ml.geekdjenika.apiinfrabaana.Repository.ReponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @ToString
 @Service
+@Transactional
 public class QuestionServiceImpl implements QuestionService{
 
     @Autowired
@@ -44,15 +46,20 @@ public class QuestionServiceImpl implements QuestionService{
     @Override
     public Optional<Question> updateQuestion(Question question, long id) {
         List<Reponse> mauvaisesreponses = question.getMauvaisesReponses();
+        List<Reponse> reponsesexistantes = reponseRepository.findByQuestion(questionRepository.findById(id).get());
         return questionRepository.findById(id).map(
                 question1 -> {
-                    question1.setQuestion(question.getQuestion());
-                    question1.setReponse(question.getReponse());
-                    if (!mauvaisesreponses.isEmpty()) {
+                    if (!question.getQuestion().isEmpty()) question1.setQuestion(question.getQuestion());
+                    if (!question.getReponse().isEmpty()) question1.setReponse(question.getReponse());
+                    if (!(mauvaisesreponses == null)) {
+                        reponseRepository.deleteAll(reponsesexistantes);
                         for (Reponse reponse :
                                 mauvaisesreponses) {
+                            reponse.setQuestion(new Question(id));
+                            reponseRepository.save(reponse);
                             question1.getMauvaisesReponses().add(reponse);
                         }
+
                     }
 
                     return questionRepository.save(question1);

@@ -22,12 +22,8 @@ public class Question {
 
     private String reponse;
 
-    @OneToMany(mappedBy="question")
+    @OneToMany(mappedBy="question", cascade = CascadeType.REMOVE)
     private List<Reponse> mauvaisesReponses=new ArrayList<>();
-
-    /*public <E> Question(String question, String reponse, Set<Reponse> reponses) {
-
-    }*/
 
     public Question(long id) {
         this.id = id;
