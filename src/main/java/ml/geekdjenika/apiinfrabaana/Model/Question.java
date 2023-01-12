@@ -25,6 +25,9 @@ public class Question {
     @OneToMany(mappedBy="question", cascade = CascadeType.REMOVE)
     private List<Reponse> mauvaisesReponses=new ArrayList<>();
 
+    @ManyToOne
+    Utilisateur utilisateur;
+
     public Question(long id) {
         this.id = id;
     }

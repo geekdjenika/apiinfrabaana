@@ -60,4 +60,8 @@ public class Utilisateur {
         this.email = email;
         this.image = image;
     }
+
+    public Utilisateur(long id) {
+        this.id = id;
+    }
 }

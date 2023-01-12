@@ -1,12 +1,20 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
+import io.jsonwebtoken.Header;
 import ml.geekdjenika.apiinfrabaana.Model.Question;
 import ml.geekdjenika.apiinfrabaana.Model.Reponse;
+import ml.geekdjenika.apiinfrabaana.Model.Utilisateur;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.QuestionService;
+import ml.geekdjenika.apiinfrabaana.payload.request.response.JwtResponse;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
@@ -38,9 +46,10 @@ public class QuizController {
         return questionService.getQuestion(id);
     }
 
-    @PostMapping("/question/add")
+    @PostMapping("/question/add/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public Question addQuestion(@RequestBody Question question) {
+    public Question addQuestion(@RequestBody Question question, @PathVariable long id) {
+        question.setUtilisateur(new Utilisateur(id));
         return questionService.addQuestion(question);
     }
 
