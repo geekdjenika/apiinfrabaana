@@ -40,7 +40,8 @@ public class QuizServiceImpl implements QuizService{
     public void addQuestionToQuiz(Question question, long id) {
 
         Quiz quiz = quizRepository.findById(id).get();
-        quiz.getQuestions().add(question);
+        Question savedquestion = questionRepository.save(question);
+        quiz.getQuestions().add(savedquestion);
 
     }
 
@@ -64,7 +65,7 @@ public class QuizServiceImpl implements QuizService{
     public Optional<Quiz> updateQuiz(Quiz quiz, long id) {
         return quizRepository.findById(id).map(
                 quiz1 -> {
-                    quiz1.setLabel(quiz1.getLabel());
+                    quiz1.setLabel(quiz.getLabel());
                     for (Question question :
                             quiz.getQuestions()) {
                         quiz1.getQuestions().add(question);

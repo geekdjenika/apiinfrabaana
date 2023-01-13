@@ -9,6 +9,8 @@ public interface UtilisateurService {
 
     Optional<Utilisateur> updateUser(Utilisateur utilisateur, long id);
 
+    Utilisateur getUser(long id);
+
     void deleteUser(long id);
 
     List<Utilisateur> getAllUsers();
