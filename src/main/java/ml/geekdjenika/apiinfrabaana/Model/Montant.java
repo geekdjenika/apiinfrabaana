@@ -16,7 +16,7 @@ public class Montant {
     @Column(name = "id", nullable = false)
     private long id;
 
-    private double montant;
+    private long montant;
 
     private String devise;
 

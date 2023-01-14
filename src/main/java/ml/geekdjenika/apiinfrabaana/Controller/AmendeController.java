@@ -18,14 +18,16 @@ public class AmendeController {
 
     @PostMapping("/montant/add")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public Montant addMontant(@RequestBody Montant montant) {
-        return montantService.addMontant(montant);
+    public String addMontant(@RequestBody Montant montant) {
+        Montant montant1 = montantService.addMontant(montant);
+        return montant1.getMontant() + " " + montant1.getDevise();
     }
 
     @GetMapping("/montant/get/{id}")
     @PostAuthorize("hasAuthority('USER')")
-    public Montant getMontant(@PathVariable long id) {
-        return montantService.getMontant(id);
+    public String getMontant(@PathVariable long id) {
+        Montant montant1 = montantService.getMontant(id);
+        return montant1.getMontant() + " " + montant1.getDevise();
     }
 
     @GetMapping("/montant/get/all")
@@ -36,8 +38,9 @@ public class AmendeController {
 
     @PutMapping("/montant/update/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public Optional<Montant> update(@RequestBody Montant montant, @PathVariable long id) {
-        return montantService.updateMontant(montant,id);
+    public String update(@RequestBody Montant montant, @PathVariable long id) {
+        Montant montant1 = montantService.updateMontant(montant,id).get();
+        return montant1.getMontant() + " " + montant1.getDevise();
     }
 
     @DeleteMapping("/montant/delete/{id}")
