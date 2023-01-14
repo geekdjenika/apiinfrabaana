@@ -1,8 +1,12 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
+import ml.geekdjenika.apiinfrabaana.Model.Amende;
 import ml.geekdjenika.apiinfrabaana.Model.Montant;
+import ml.geekdjenika.apiinfrabaana.Repository.MontantRepository;
+import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.AmendeService;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.MontantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +19,10 @@ public class AmendeController {
 
     @Autowired
     MontantService montantService;
+    @Autowired
+    private AmendeService amendeService;
+    @Autowired
+    private MontantRepository montantRepository;
 
     @PostMapping("/montant/add")
     @PostAuthorize("hasAuthority('ADMIN')")
@@ -48,6 +56,49 @@ public class AmendeController {
     public String delete(@PathVariable long id) {
         montantService.deleteMontant(id);
         return "Montant supprimé avec succès !";
+    }
+
+    //###########################AMENDE#################################
+    @PostMapping("/add")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public Amende addFine(
+            @Param("type") String type,
+            @Param("montant") long montant) {
+        Amende amende = new Amende();
+        amende.setType(type);
+        amende.setMontant(montantRepository.findByMontant(montant));
+        return amendeService.addFine(amende);
+    }
+
+    @GetMapping("/get/{id}")
+    @PostAuthorize("hasAuthority('USER')")
+    public Amende getFine(@PathVariable long id) {
+        return amendeService.getFine(id);
+    }
+
+    @GetMapping("/get/all")
+    @PostAuthorize("hasAuthority('USER')")
+    public List<Amende> getAllFine() {
+        return amendeService.getAllFine();
+    }
+
+    @PutMapping("/update/{id}")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public Optional<Amende> updateFine(
+            @Param("type") String type,
+            @Param("montant") long montant,
+            @PathVariable long id) {
+        Amende amende = new Amende();
+        amende.setType(type);
+        amende.setMontant(montantRepository.findByMontant(montant));
+        return amendeService.updateFine(amende,id);
+    }
+
+    @DeleteMapping("/montant/delete/{id}")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public String deleteFine(@PathVariable long id) {
+        amendeService.deleteFine(id);
+        return "Amende supprimé avec succès !";
     }
 
 }

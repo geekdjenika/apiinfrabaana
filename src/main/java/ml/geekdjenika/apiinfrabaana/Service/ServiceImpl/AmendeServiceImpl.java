@@ -3,10 +3,14 @@ package ml.geekdjenika.apiinfrabaana.Service.ServiceImpl;
 import ml.geekdjenika.apiinfrabaana.Model.Amende;
 import ml.geekdjenika.apiinfrabaana.Repository.AmendeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Service
+@Transactional
 public class AmendeServiceImpl implements AmendeService {
 
     @Autowired
@@ -40,6 +44,6 @@ public class AmendeServiceImpl implements AmendeService {
 
     @Override
     public void deleteFine(long id) {
-
+        amendeRepository.deleteById(id);
     }
 }
