@@ -137,7 +137,7 @@ public class QuizController {
 
     @PostMapping("/addquestions/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public String addQuestionToQuiz(@Param("question1") String question1,
+    public String addQuestionsToQuiz(@Param("question1") String question1,
                                      @Param("question2") String question2,
                                      @Param("question3") String question3,
                                      @PathVariable long id) {
