@@ -4,6 +4,7 @@ import ml.geekdjenika.apiinfrabaana.Model.Question;
 import ml.geekdjenika.apiinfrabaana.Model.Quiz;
 import ml.geekdjenika.apiinfrabaana.Model.Reponse;
 import ml.geekdjenika.apiinfrabaana.Model.Utilisateur;
+import ml.geekdjenika.apiinfrabaana.Repository.UtilisateurRepository;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.QuestionService;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.QuizService;
 import org.springframework.data.repository.query.Param;
@@ -19,10 +20,13 @@ public class QuizController {
 
     private final QuestionService questionService;
     private final QuizService quizService;
+    private final UtilisateurRepository utilisateurRepository;
 
-    public QuizController(QuestionService questionService, QuizService quizService) {
+    public QuizController(QuestionService questionService, QuizService quizService,
+                          UtilisateurRepository utilisateurRepository) {
         this.questionService = questionService;
         this.quizService = quizService;
+        this.utilisateurRepository = utilisateurRepository;
     }
 
     @GetMapping("/questions")
@@ -98,10 +102,9 @@ public class QuizController {
 
     }
     // #QUIZ####################    Q#U#I#Z   ####################QUIZ#
-    @PostMapping("/add/{id}")
+    @PostMapping("/add")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public Quiz addQuiz(@RequestBody Quiz quiz, @PathVariable long id) {
-        //quiz.getUtilisateurs().add();
+    public Quiz addQuiz(@RequestBody Quiz quiz) {
         return quizService.addQuiz(quiz);
     }
 
@@ -117,28 +120,36 @@ public class QuizController {
         return quizService.getAllQuiz();
     }
 
-    @PostMapping("/add/{id}")
+    @PostMapping("/addqtoq/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public String addQuesstionToQuiz(@Param("question") String question, @PathVariable long id) {
+    public String addQuestionToQuiz(@Param("question") String question, @PathVariable long id) {
+
         quizService.addQuestionToQuiz(question,id);
         return question + " ajoutée au quiz avec succès !";
     }
 
     @PostMapping("/addquestion/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public String addQuesstionToQuiz(@RequestBody Question question, @PathVariable long id) {
+    public String addQuestionToQuiz(@RequestBody Question question, @PathVariable long id) {
         quizService.addQuestionToQuiz(question,id);
         return question + " ajoutée au quiz avec succès !";
     }
 
     @PostMapping("/addquestions/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public String addQuesstionToQuiz(@Param("questions") List<String> question, @PathVariable long id) {
-        quizService.addQuestionsToQuiz(question,id);
-        return question + " ajoutée au quiz avec succès !";
+    public String addQuestionToQuiz(@Param("question1") String question1,
+                                     @Param("question2") String question2,
+                                     @Param("question3") String question3,
+                                     @PathVariable long id) {
+        quizService.addQuestionToQuiz(question1,id);
+        quizService.addQuestionToQuiz(question2,id);
+        quizService.addQuestionToQuiz(question3,id);
+
+        return "Questions : [" + question1 + question2 + question3 +
+                "] ajoutées au quiz avec succès !";
     }
 
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
     public Optional<Quiz> updateQuiz(@RequestBody Quiz quiz, @PathVariable long id){
         return quizService.updateQuiz(quiz, id);

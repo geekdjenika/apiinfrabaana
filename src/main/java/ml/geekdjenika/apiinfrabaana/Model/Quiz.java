@@ -20,10 +20,10 @@ public class Quiz {
 
     private String label;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private Collection<Question> questions = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<Utilisateur> utilisateurs = new ArrayList<>();
+    @ManyToMany
+    private Collection<Utilisateur> joueurs = new ArrayList<>();
 
 }
