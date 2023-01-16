@@ -1,5 +1,6 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
+import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Model.Question;
 import ml.geekdjenika.apiinfrabaana.Model.Quiz;
 import ml.geekdjenika.apiinfrabaana.Model.Reponse;
@@ -15,6 +16,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/quiz")
+@ToString
 public class QuizController {
 
 

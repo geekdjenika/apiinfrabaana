@@ -1,5 +1,6 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
+import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Configuration.Image;
 import ml.geekdjenika.apiinfrabaana.Model.Utilisateur;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.UtilisateurService;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/user")
+@ToString
 public class UtilisateurController {
 
     @Autowired

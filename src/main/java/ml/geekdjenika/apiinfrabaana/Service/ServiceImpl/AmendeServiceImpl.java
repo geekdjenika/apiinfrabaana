@@ -2,6 +2,7 @@ package ml.geekdjenika.apiinfrabaana.Service.ServiceImpl;
 
 import ml.geekdjenika.apiinfrabaana.Model.Amende;
 import ml.geekdjenika.apiinfrabaana.Repository.AmendeRepository;
+import ml.geekdjenika.apiinfrabaana.Repository.CategorieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ public class AmendeServiceImpl implements AmendeService {
 
     @Autowired
     AmendeRepository amendeRepository;
+
+    @Autowired
+    CategorieRepository categorieRepository;
 
     @Override
     public Amende addFine(Amende amende) {
@@ -35,7 +39,7 @@ public class AmendeServiceImpl implements AmendeService {
     public Optional<Amende> updateFine(Amende amende, long id) {
         return amendeRepository.findById(id).map(
                 amende1 -> {
-                    amende1.setType(amende.getType());
+                    amende.setCategorie(amende.getCategorie());
                     amende1.setMontant(amende.getMontant());
                     return amendeRepository.save(amende1);
                 }

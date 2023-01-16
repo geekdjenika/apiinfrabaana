@@ -1,6 +1,7 @@
 package ml.geekdjenika.apiinfrabaana.jwt;
 
 import io.jsonwebtoken.*;
+import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
+@ToString
 public class JwtUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);

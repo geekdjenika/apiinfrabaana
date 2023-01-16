@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MontantRepository extends JpaRepository<Montant, Long> {
-    Montant findByMontant(double montant);
+    Montant findByMontant(long montant);
     Montant findByDevise(String devise);
 }

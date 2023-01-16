@@ -1,7 +1,9 @@
 package ml.geekdjenika.apiinfrabaana.payload.request.response;
 
-import java.util.List;
+import lombok.ToString;
 
+import java.util.List;
+@ToString
 public class JwtResponse {
 
     private String token;

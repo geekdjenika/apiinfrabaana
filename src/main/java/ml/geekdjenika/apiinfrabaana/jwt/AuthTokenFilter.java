@@ -1,6 +1,7 @@
 package ml.geekdjenika.apiinfrabaana.jwt;
 
 
+import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@ToString
 public class AuthTokenFilter extends OncePerRequestFilter {
 
     @Autowired

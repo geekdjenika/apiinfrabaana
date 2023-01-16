@@ -1,7 +1,9 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
+import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Model.Amende;
 import ml.geekdjenika.apiinfrabaana.Model.Montant;
+import ml.geekdjenika.apiinfrabaana.Repository.CategorieRepository;
 import ml.geekdjenika.apiinfrabaana.Repository.MontantRepository;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.AmendeService;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.MontantService;
@@ -15,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/amende")
+@ToString
 public class AmendeController {
 
     @Autowired
@@ -23,19 +26,21 @@ public class AmendeController {
     private AmendeService amendeService;
     @Autowired
     private MontantRepository montantRepository;
+    @Autowired
+    private CategorieRepository categorieRepository;
 
     @PostMapping("/montant/add")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public String addMontant(@RequestBody Montant montant) {
+    public Montant addMontant(@RequestBody Montant montant) {
         Montant montant1 = montantService.addMontant(montant);
-        return montant1.getMontant() + " " + montant1.getDevise();
+        return montant1;
     }
 
     @GetMapping("/montant/get/{id}")
     @PostAuthorize("hasAuthority('USER')")
-    public String getMontant(@PathVariable long id) {
+    public Montant getMontant(@PathVariable long id) {
         Montant montant1 = montantService.getMontant(id);
-        return montant1.getMontant() + " " + montant1.getDevise();
+        return montant1;
     }
 
     @GetMapping("/montant/get/all")
@@ -65,7 +70,7 @@ public class AmendeController {
             @Param("type") String type,
             @Param("montant") long montant) {
         Amende amende = new Amende();
-        amende.setType(type);
+        amende.setCategorie(categorieRepository.findByCategorie(type));
         amende.setMontant(montantRepository.findByMontant(montant));
         return amendeService.addFine(amende);
     }
@@ -89,16 +94,16 @@ public class AmendeController {
             @Param("montant") long montant,
             @PathVariable long id) {
         Amende amende = new Amende();
-        amende.setType(type);
+        amende.setCategorie(categorieRepository.findByCategorie(type));;
         amende.setMontant(montantRepository.findByMontant(montant));
         return amendeService.updateFine(amende,id);
     }
 
-    @DeleteMapping("/montant/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
     public String deleteFine(@PathVariable long id) {
         amendeService.deleteFine(id);
-        return "Amende supprimé avec succès !";
+        return "Amende supprimée avec succès !";
     }
 
 }
