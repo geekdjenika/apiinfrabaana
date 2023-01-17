@@ -5,10 +5,11 @@ import ml.geekdjenika.apiinfrabaana.Model.Infraction;
 import ml.geekdjenika.apiinfrabaana.Model.Utilisateur;
 import ml.geekdjenika.apiinfrabaana.Repository.InfractionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class InfractionServiceImpl implements InfractionService{
 
     @Autowired
@@ -30,11 +31,6 @@ public class InfractionServiceImpl implements InfractionService{
     }
 
     @Override
-    public List<Infraction> getAllByAmende(Amende amende) {
-        return infractionRepository.findByAmende(amende);
-    }
-
-    @Override
     public List<Infraction> getAllByUser(Utilisateur utilisateur) {
         return infractionRepository.findByUtilisateur(utilisateur);
     }
@@ -45,7 +41,7 @@ public class InfractionServiceImpl implements InfractionService{
                 infractionamodifier -> {
                     infractionamodifier.setDescription(infraction.getDescription());
                     infractionamodifier.setReference(infraction.getReference());
-                    infractionamodifier.setAmende(infraction.getAmende());
+                    infractionamodifier.setAmendes(infraction.getAmendes());
                     infractionamodifier.setUtilisateur(infraction.getUtilisateur());
                     return infractionRepository.save(infractionamodifier);
                 }

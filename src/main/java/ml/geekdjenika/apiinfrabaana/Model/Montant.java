@@ -18,6 +18,7 @@ public class Montant {
     @Column(name = "id", nullable = false)
     private long id;
 
+    @Column(unique = true)
     private long montant;
 
     private String devise;

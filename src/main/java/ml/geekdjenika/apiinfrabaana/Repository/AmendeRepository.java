@@ -12,7 +12,5 @@ import java.util.List;
 public interface AmendeRepository extends JpaRepository<Amende, Long> {
     Amende findByCategorie(Categorie categorie);
 
-    //List<Amende> findByMontant(Montant montant);
-
     Amende findByMontant(Montant montant);
 }

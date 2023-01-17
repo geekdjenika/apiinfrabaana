@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -22,8 +23,8 @@ public class Infraction {
 
     private String reference;
 
-    @ManyToOne
-    private Amende amende;
+    @ManyToMany
+    private List<Amende> amendes;
 
     @ManyToOne
     private  Utilisateur utilisateur;

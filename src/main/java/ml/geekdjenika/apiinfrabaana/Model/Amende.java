@@ -24,4 +24,6 @@ public class Amende {
 
     @ManyToOne
     private Montant montant;
+
+    //String tauxamende = montant.getMontant() + " " +montant.getDevise() + " (" + categorie.getCategorie() + " )";
 }
