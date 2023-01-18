@@ -70,7 +70,7 @@ public class AmendeController {
             @Param("type") String type,
             @Param("montant") long montant) {
         Amende amende = new Amende();
-        amende.setCategorie(categorieRepository.findByCategorie(type));
+        if (categorieRepository.findByCategorie(type)!=null) amende.setCategorie(categorieRepository.findByCategorie(type));
         amende.setMontant(montantRepository.findByMontant(montant));
         return amendeService.addFine(amende);
     }

@@ -25,5 +25,9 @@ public class Amende {
     @ManyToOne
     private Montant montant;
 
+    public Amende(long id) {
+        this.id = id;
+    }
+
     //String tauxamende = montant.getMontant() + " " +montant.getDevise() + " (" + categorie.getCategorie() + " )";
 }

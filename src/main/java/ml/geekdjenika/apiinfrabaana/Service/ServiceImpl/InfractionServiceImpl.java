@@ -52,4 +52,9 @@ public class InfractionServiceImpl implements InfractionService{
     public void delete(long id) {
         infractionRepository.deleteById(id);
     }
+
+    @Override
+    public Infraction superAdd(Infraction infraction) {
+        return infractionRepository.save(infraction);
+    }
 }

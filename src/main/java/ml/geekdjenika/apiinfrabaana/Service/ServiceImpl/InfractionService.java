@@ -16,4 +16,5 @@ public interface InfractionService {
     Optional<Infraction> update(Infraction infraction, long id);
     void delete(long id);
 
+    Infraction superAdd(Infraction infraction);
 }

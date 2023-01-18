@@ -23,4 +23,8 @@ public class Montant {
 
     private String devise;
 
+    public Montant(String devise, long montant) {
+        this.devise = devise;
+        this.montant = montant;
+    }
 }
