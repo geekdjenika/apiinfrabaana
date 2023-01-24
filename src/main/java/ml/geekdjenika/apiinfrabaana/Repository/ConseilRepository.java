@@ -12,5 +12,5 @@ public interface ConseilRepository extends JpaRepository<Conseil, Long> {
 
     Conseil findByConseil(String conseil);
 
-    List<Conseil> findByInfraction(Infraction infraction);
+    //List<Conseil> findByInfraction(Infraction infraction);
 }

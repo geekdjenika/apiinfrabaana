@@ -30,10 +30,10 @@ public class ConseilServiceImpl implements ConseilService{
         return conseilRepository.findAll();
     }
 
-    @Override
+    /*@Override
     public List<Conseil> getAllByInfraction(Infraction infraction) {
         return conseilRepository.findByInfraction(infraction);
-    }
+    }*/
 
     @Override
     public Optional<Conseil> update(Conseil conseil, long id) {

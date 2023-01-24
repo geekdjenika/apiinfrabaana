@@ -12,7 +12,7 @@ public interface ConseilService {
     Conseil addConseil(Conseil conseil);
     Conseil getConseil(long id);
     List<Conseil> getAll();
-    List<Conseil> getAllByInfraction(Infraction infraction);
+    //List<Conseil> getAllByInfraction(Infraction infraction);
     Optional<Conseil> update(Conseil conseil, long id);
     void delete(long id);
 

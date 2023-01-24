@@ -1,6 +1,5 @@
 package ml.geekdjenika.apiinfrabaana.Service.ServiceImpl;
 
-import ml.geekdjenika.apiinfrabaana.Model.Amende;
 import ml.geekdjenika.apiinfrabaana.Model.Infraction;
 import ml.geekdjenika.apiinfrabaana.Model.Utilisateur;
 import ml.geekdjenika.apiinfrabaana.Repository.InfractionRepository;
@@ -11,6 +10,9 @@ import java.util.List;
 import java.util.Optional;
 @Service
 public class InfractionServiceImpl implements InfractionService{
+
+    @Autowired
+    private InfraRepository infraRepository;
 
     @Autowired
     InfractionRepository infractionRepository;
@@ -33,6 +35,11 @@ public class InfractionServiceImpl implements InfractionService{
     @Override
     public List<Infraction> getAllByUser(Utilisateur utilisateur) {
         return infractionRepository.findByUtilisateur(utilisateur);
+    }
+
+    @Override
+    public List<Infraction> getAllByCategorie(String categorie) {
+        return infraRepository.findInfractionsByCategory(categorie);
     }
 
     @Override
