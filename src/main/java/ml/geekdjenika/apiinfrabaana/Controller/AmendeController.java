@@ -1,6 +1,7 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
 import lombok.ToString;
+import ml.geekdjenika.apiinfrabaana.Configuration.Audio;
 import ml.geekdjenika.apiinfrabaana.Model.Amende;
 import ml.geekdjenika.apiinfrabaana.Model.Montant;
 import ml.geekdjenika.apiinfrabaana.Repository.CategorieRepository;
@@ -11,7 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,10 +74,23 @@ public class AmendeController {
     @PostAuthorize("hasAuthority('ADMIN')")
     public Amende addFine(
             @Param("type") String type,
-            @Param("montant") long montant) {
+            @Param("montant") long montant,
+            @Param("file")MultipartFile file) throws IOException {
         Amende amende = new Amende();
         if (categorieRepository.findByCategorie(type)!=null) amende.setCategorie(categorieRepository.findByCategorie(type));
-        amende.setMontant(montantRepository.findByMontant(montant));
+        String uploadDir = System.getProperty("user.dir") + "/assets/aud";
+        //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
+        File convFile = new File(file.getOriginalFilename());
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        Audio.saveAudio(uploadDir, convFile);
+        amende.setAudio(file.getOriginalFilename());
+        if (montantRepository.findByMontant(montant) != null) amende.setMontant(montantRepository.findByMontant(montant));
+        else {
+            Montant montant1 = montantService.addMontant(new Montant("FCFA",montant));
+            amende.setMontant(montant1);
+        }
         return amendeService.addFine(amende);
     }
 

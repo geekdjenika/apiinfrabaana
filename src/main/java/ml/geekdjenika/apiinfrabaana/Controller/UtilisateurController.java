@@ -45,8 +45,9 @@ public class UtilisateurController {
             @Param("photo") MultipartFile photo,
             @PathVariable long id) throws IOException {
         String imageName = StringUtils.cleanPath(photo.getOriginalFilename());
+        String uploadDir = System.getProperty("user.dir") + "/assets/img";
+        //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
         Utilisateur utilisateur = new Utilisateur(username,email,imageName);
-        String uploadDir = "C:\\Users\\djeni\\IdeaProjects\\apiinfrabaana\\assets\\img";
         Image.saveImage(uploadDir, imageName, photo);
         return utilisateurService.updateUser(utilisateur,id);
     }

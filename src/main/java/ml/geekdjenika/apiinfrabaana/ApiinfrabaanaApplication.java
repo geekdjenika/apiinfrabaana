@@ -4,8 +4,10 @@ import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Controller.AuthController;
 import ml.geekdjenika.apiinfrabaana.Model.Categorie;
 import ml.geekdjenika.apiinfrabaana.Model.ERole;
+import ml.geekdjenika.apiinfrabaana.Model.Langue;
 import ml.geekdjenika.apiinfrabaana.Model.Role;
 import ml.geekdjenika.apiinfrabaana.Repository.CategorieRepository;
+import ml.geekdjenika.apiinfrabaana.Repository.LangueRepository;
 import ml.geekdjenika.apiinfrabaana.Repository.RoleRepository;
 import ml.geekdjenika.apiinfrabaana.payload.request.SignupRequest;
 import org.springframework.boot.CommandLineRunner;
@@ -28,7 +30,7 @@ public class ApiinfrabaanaApplication {
     }
 
     @Bean
-    CommandLineRunner start(RoleRepository roleRepository, AuthController authController, CategorieRepository categorieRepository) {
+    CommandLineRunner start(RoleRepository roleRepository, AuthController authController, CategorieRepository categorieRepository, LangueRepository langueRepository) {
 
         return args -> {
 
@@ -49,6 +51,12 @@ public class ApiinfrabaanaApplication {
                 categorieRepository.save(new Categorie("Véhicules légers"));
                 categorieRepository.save(new Categorie("Motos"));
                 categorieRepository.save(new Categorie("Générales"));
+            }
+
+            if (langueRepository.findAll().isEmpty()) {
+                langueRepository.save(new Langue("bm"));
+                langueRepository.save(new Langue("fr"));
+                langueRepository.save(new Langue("en"));
             }
 
         };

@@ -2,6 +2,7 @@ package ml.geekdjenika.apiinfrabaana.Service.ServiceImpl;
 
 import ml.geekdjenika.apiinfrabaana.Model.Infraction;
 import ml.geekdjenika.apiinfrabaana.Model.Utilisateur;
+import ml.geekdjenika.apiinfrabaana.Repository.InfraRepository;
 import ml.geekdjenika.apiinfrabaana.Repository.InfractionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

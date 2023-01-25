@@ -1,4 +1,4 @@
-package ml.geekdjenika.apiinfrabaana.Service.ServiceImpl;
+package ml.geekdjenika.apiinfrabaana.Repository;
 
 import ml.geekdjenika.apiinfrabaana.Model.Infraction;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -6,24 +6,21 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Conseil {
+public class Langue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private long id;
 
-    private String conseil;
+    private String label;
 
-    private String audio;
-
-    @ManyToMany
-    Collection<Infraction> infractions = new ArrayList<>();
+    public Langue(String label) {
+        this.label = label;
+    }
 }

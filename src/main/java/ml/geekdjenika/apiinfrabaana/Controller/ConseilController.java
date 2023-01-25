@@ -1,13 +1,19 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
 import lombok.ToString;
+import ml.geekdjenika.apiinfrabaana.Configuration.Audio;
 import ml.geekdjenika.apiinfrabaana.Model.*;
 import ml.geekdjenika.apiinfrabaana.Repository.InfractionRepository;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.ConseilService;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,10 +33,18 @@ public class ConseilController {
     @PostAuthorize("hasAuthority('ADMIN')")
     public Conseil addConseil(
             @Param("conseil") String conseil,
-            @Param("infraction") String infraction
-            ) {
+            @Param("infraction") String infraction,
+            @Param("file") MultipartFile file) throws IOException {
         Conseil conseil1 = new Conseil();
         conseil1.setConseil(conseil);
+        String uploadDir = System.getProperty("user.dir") + "/assets/aud";
+        //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
+        File convFile = new File(file.getOriginalFilename());
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        Audio.saveAudio(uploadDir, convFile);
+        conseil1.setAudio(file.getOriginalFilename());
         if (infractionRepository.findByDescription(infraction) != null) conseil1.getInfractions().add(infractionRepository.findByDescription(infraction));
 
         return conseilService.addConseil(conseil1);

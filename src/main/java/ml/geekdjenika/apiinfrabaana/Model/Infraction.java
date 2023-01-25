@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -24,7 +25,7 @@ public class Infraction {
     private String reference;
 
     @ManyToMany
-    private List<Amende> amendes;
+    private List<Amende> amendes = new ArrayList<>();
 
     @ManyToOne
     private  Utilisateur utilisateur;

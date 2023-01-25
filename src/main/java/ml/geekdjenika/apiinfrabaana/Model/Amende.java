@@ -25,6 +25,8 @@ public class Amende {
     @ManyToOne
     private Montant montant;
 
+    private String audio;
+
     public Amende(long id) {
         this.id = id;
     }
