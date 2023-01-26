@@ -6,27 +6,17 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Conseil {
+public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private long id;
 
-    private String conseil;
-
-    @OneToMany(mappedBy = "conseil")
-    private List<Vocal> vocals = new ArrayList<>();
-
-    @ManyToMany
-    Collection<Infraction> infractions = new ArrayList<>();
-
+    private String description;
 }

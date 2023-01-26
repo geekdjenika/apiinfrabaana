@@ -24,6 +24,9 @@ public class Infraction {
 
     private String reference;
 
+    @OneToMany(mappedBy = "infraction")
+    private List<Vocal> vocals = new ArrayList<>();
+
     @ManyToMany
     private List<Amende> amendes = new ArrayList<>();
 

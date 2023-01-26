@@ -7,6 +7,8 @@ import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -25,7 +27,8 @@ public class Amende {
     @ManyToOne
     private Montant montant;
 
-    private String audio;
+    @OneToMany(mappedBy = "amende")
+    private List<Vocal> vocals = new ArrayList<>();
 
     public Amende(long id) {
         this.id = id;

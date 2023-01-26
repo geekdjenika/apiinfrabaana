@@ -16,6 +16,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/quiz")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @ToString
 public class QuizController {
 

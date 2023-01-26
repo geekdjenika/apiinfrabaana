@@ -3,10 +3,12 @@ package ml.geekdjenika.apiinfrabaana.Service.ServiceImpl;
 import ml.geekdjenika.apiinfrabaana.Model.Vocal;
 import ml.geekdjenika.apiinfrabaana.Repository.VocalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class VocalServiceImpl implements VocalService{
 
     @Autowired

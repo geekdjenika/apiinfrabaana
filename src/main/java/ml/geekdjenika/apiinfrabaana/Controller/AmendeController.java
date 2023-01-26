@@ -4,10 +4,11 @@ import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Configuration.Audio;
 import ml.geekdjenika.apiinfrabaana.Model.Amende;
 import ml.geekdjenika.apiinfrabaana.Model.Montant;
-import ml.geekdjenika.apiinfrabaana.Repository.CategorieRepository;
-import ml.geekdjenika.apiinfrabaana.Repository.MontantRepository;
+import ml.geekdjenika.apiinfrabaana.Model.Vocal;
+import ml.geekdjenika.apiinfrabaana.Repository.*;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.AmendeService;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.MontantService;
+import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.VocalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -23,17 +23,29 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/amende")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @ToString
 public class AmendeController {
 
     @Autowired
-    MontantService montantService;
+    private MontantService montantService;
     @Autowired
     private AmendeService amendeService;
     @Autowired
     private MontantRepository montantRepository;
     @Autowired
     private CategorieRepository categorieRepository;
+    @Autowired
+    private VocalService vocalService;
+    @Autowired
+    private ConseilRepository conseilRepository;
+    @Autowired
+    private InfractionRepository infractionRepository;
+    @Autowired
+    private AmendeRepository amendeRepository;
+    @Autowired
+    private LangueRepository langueRepository;
+    VocalController vocalController = new VocalController(vocalService, conseilRepository, infractionRepository, amendeRepository, montantRepository, langueRepository);
 
     @PostMapping("/montant/add")
     @PostAuthorize("hasAuthority('ADMIN')")
@@ -75,23 +87,35 @@ public class AmendeController {
     public Amende addFine(
             @Param("type") String type,
             @Param("montant") long montant,
-            @Param("file")MultipartFile file) throws IOException {
+            @Param("file")MultipartFile file,
+            @Param("langue") String langue) throws IOException {
         Amende amende = new Amende();
         if (categorieRepository.findByCategorie(type)!=null) amende.setCategorie(categorieRepository.findByCategorie(type));
-        String uploadDir = System.getProperty("user.dir") + "/assets/aud";
-        //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
-        File convFile = new File(file.getOriginalFilename());
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
-        fos.close();
-        Audio.saveAudio(uploadDir, convFile);
-        amende.setAudio(file.getOriginalFilename());
         if (montantRepository.findByMontant(montant) != null) amende.setMontant(montantRepository.findByMontant(montant));
         else {
             Montant montant1 = montantService.addMontant(new Montant("FCFA",montant));
             amende.setMontant(montant1);
         }
-        return amendeService.addFine(amende);
+        amende = amendeService.addFine(amende);
+
+        if (file != null) {
+            //Vocal
+            String uploadDir = System.getProperty("user.dir") + "/assets/aud";
+            //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
+            File convFile = new File(file.getOriginalFilename());
+            FileOutputStream fos = new FileOutputStream(convFile);
+            fos.write(file.getBytes());
+            fos.close();
+            Audio.saveAudio(uploadDir, convFile);
+            Vocal vocal = new Vocal();
+            if (langueRepository.findByLabel(langue) != null) vocal.setLangue(langueRepository.findByLabel(langue));
+            vocal.setAmende(amende);
+            vocal.setVocal(file.getOriginalFilename());
+            vocalService.addVocal(vocal);
+        }
+
+
+        return amende;
     }
 
     @GetMapping("/get/{id}")
