@@ -33,6 +33,10 @@ public class ConseilController {
 
     @Autowired
     LangueRepository langueRepository;
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @PostMapping("/add")
     @PostAuthorize("hasAuthority('ADMIN')")
@@ -47,7 +51,15 @@ public class ConseilController {
         if (infractionRepository.findByDescription(infraction) != null) conseil1.getInfractions().add(infractionRepository.findByDescription(infraction));
 
         conseil1 = conseilService.addConseil(conseil1);
+        //Notification
         Notification notification = new Notification();
+        notification.setDescription("Nouveau conseil ajouté !\n" + conseil1.getConseil());
+        notificationRepository.save(notification);
+        for (Utilisateur utilisateur :
+                utilisateurRepository.findAll()) {
+            utilisateur.getNotifications().add(notification);
+        }
+
 
         if (file != null) {
             //Vocal
