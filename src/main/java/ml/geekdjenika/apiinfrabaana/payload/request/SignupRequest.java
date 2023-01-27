@@ -1,11 +1,13 @@
 package ml.geekdjenika.apiinfrabaana.payload.request;
 
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Set;
+@ToString
 public class SignupRequest {
 
     @NotBlank

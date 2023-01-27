@@ -1,10 +1,7 @@
 package ml.geekdjenika.apiinfrabaana.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Reponse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

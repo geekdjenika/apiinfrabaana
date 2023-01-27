@@ -2,6 +2,7 @@ package ml.geekdjenika.apiinfrabaana.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Component
+@ToString
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 

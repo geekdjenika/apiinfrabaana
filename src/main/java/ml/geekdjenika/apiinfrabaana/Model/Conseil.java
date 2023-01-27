@@ -6,31 +6,27 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Question {
-
+public class Conseil {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private long id;
 
-    private String question;
+    private String conseil;
 
-    private String reponse;
+    @OneToMany(mappedBy = "conseil")
+    private List<Vocal> vocals = new ArrayList<>();
 
-    @OneToMany(mappedBy="question", cascade = CascadeType.REMOVE)
-    private List<Reponse> mauvaisesReponses=new ArrayList<>();
+    @ManyToMany
+    Collection<Infraction> infractions = new ArrayList<>();
 
-    @ManyToOne
-    Utilisateur utilisateur;
-
-    public Question(long id) {
-        this.id = id;
-    }
 }
