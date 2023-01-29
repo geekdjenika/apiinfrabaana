@@ -1,5 +1,6 @@
 package ml.geekdjenika.apiinfrabaana.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class Amende {
     private long id;
 
     @ManyToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Categorie categorie;
 
     @ManyToOne
@@ -29,6 +31,9 @@ public class Amende {
 
     @OneToMany(mappedBy = "amende")
     private List<Vocal> vocals = new ArrayList<>();
+
+    @ManyToMany
+    private List<Infraction> infractions = new ArrayList<>();
 
     public Amende(long id) {
         this.id = id;

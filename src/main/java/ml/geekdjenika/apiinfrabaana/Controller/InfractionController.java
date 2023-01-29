@@ -111,6 +111,14 @@ public class InfractionController {
             @Param("langue") String langue,
             @PathVariable long id
     ) throws IOException {
+
+        Infraction infraction = new Infraction();
+        infraction.setUtilisateur(utilisateurRepository.findById(id).get());
+        infraction.setDescription(description);
+        infraction.setReference(reference);
+
+        infraction = infractionService.superAdd(infraction);
+
         Categorie categorie1 = categorieRepository.findByCategorie(categorieamende1);
         Amende amende1 = new Amende();
         Montant nouveaumontant1;
@@ -120,14 +128,16 @@ public class InfractionController {
                 nouveaumontant1 = montantRepository.save(nouveaumontant1);
                 amende1.setMontant(nouveaumontant1);
                 amende1.setCategorie(categorie1);
-                amende1 = amendeRepository.save(amende1);
+                amende1.getInfractions().add(infraction);
+                amendeRepository.save(amende1);
             } else {
                 nouveaumontant1 = montantRepository.findByMontant(Long.parseLong(montant1));
                 if (amendeRepository.findByMontant(nouveaumontant1) != null) amende1 = amendeRepository.findByMontant(nouveaumontant1);
                 else {
                     amende1.setMontant(nouveaumontant1);
                     amende1.setCategorie(categorie1);
-                    amende1 = amendeRepository.save(amende1);
+                    amende1.getInfractions().add(infraction);
+                    amendeRepository.save(amende1);
                 }
             }
 
@@ -144,28 +154,22 @@ public class InfractionController {
                 nouveaumontant2 = montantRepository.save(nouveaumontant2);
                 amende2.setMontant(nouveaumontant2);
                 amende2.setCategorie(categorie2);
-                amende2 = amendeRepository.save(amende2);
+                amende2.getInfractions().add(infraction);
+                amendeRepository.save(amende2);
             } else {
                 nouveaumontant2 = montantRepository.findByMontant(Long.parseLong(montant2));
                 if (amendeRepository.findByMontant(nouveaumontant2) != null) amende2 = amendeRepository.findByMontant(nouveaumontant2);
                 else {
                     amende2.setMontant(nouveaumontant2);
                     amende2.setCategorie(categorie2);
-                    amende2 = amendeRepository.save(amende2);
+                    amende2.getInfractions().add(infraction);
+                    amendeRepository.save(amende2);
                 }
             }
 
         }
 
-        Infraction infraction = new Infraction();
-        infraction.setAmendes(new ArrayList<>());
-        infraction.setUtilisateur(utilisateurRepository.findById(id).get());
-        infraction.setDescription(description);
-        infraction.setReference(reference);
-        infraction.getAmendes().add(amende1);
-        infraction.getAmendes().add(amende2);
 
-        infraction = infractionService.superAdd(infraction);
 
         if (file != null) {
             //Vocal

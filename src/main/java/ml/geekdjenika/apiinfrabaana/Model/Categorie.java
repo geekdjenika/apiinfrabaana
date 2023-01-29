@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,6 +21,9 @@ public class Categorie {
     private long id;
 
     private String categorie;
+
+    @OneToMany(mappedBy="categorie", cascade = CascadeType.REMOVE)
+    private List<Amende> amendes = new ArrayList<>();
 
     public Categorie(String categorie) {
         this.categorie = categorie;
