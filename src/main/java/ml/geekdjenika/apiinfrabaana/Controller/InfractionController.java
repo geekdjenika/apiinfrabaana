@@ -2,6 +2,7 @@ package ml.geekdjenika.apiinfrabaana.Controller;
 
 import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Configuration.Audio;
+import ml.geekdjenika.apiinfrabaana.Configuration.Excel;
 import ml.geekdjenika.apiinfrabaana.Model.*;
 import ml.geekdjenika.apiinfrabaana.Repository.*;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.InfractionService;
@@ -235,6 +236,28 @@ public class InfractionController {
     @PostAuthorize("hasAuthority('USER')")
     public List<Infraction> getInfractionsByCategory(@Param("categorie") String categorie) {
         return infractionService.getAllByCategorie(categorie);
+    }
+
+    @PostMapping("/importer/{id}")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public List<ExcelDto> importer(@Param("excel") MultipartFile excel, @PathVariable long id) throws IOException {
+        List<ExcelDto> excelDtos = Excel.importer(excel);
+        for (ExcelDto exceldata :
+                excelDtos) {
+            superAddInfraction(
+                    exceldata.getDescription(),
+                    exceldata.getReference(),
+                    exceldata.getCategorie1(),
+                    exceldata.getDevise1(),
+                    exceldata.getMontant1(),
+                    exceldata.getCategorie2(),
+                    exceldata.getDevise2(),
+                    exceldata.getMontant2(),
+                    null,
+                    null,
+                    id);
+        }
+        return excelDtos;
     }
 
 }
