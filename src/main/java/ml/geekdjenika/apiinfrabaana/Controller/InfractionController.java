@@ -118,14 +118,22 @@ public class InfractionController {
             nouveaumontant1 = new Montant(devise1,Long.parseLong(montant1));
             if (montantRepository.findByMontant(Long.parseLong(montant1)) == null) {
                 nouveaumontant1 = montantRepository.save(nouveaumontant1);
+                amende1.setMontant(nouveaumontant1);
+                amende1.setCategorie(categorie1);
+                amende1 = amendeRepository.save(amende1);
             } else {
                 nouveaumontant1 = montantRepository.findByMontant(Long.parseLong(montant1));
+                if (amendeRepository.findByMontant(nouveaumontant1) != null) amende1 = amendeRepository.findByMontant(nouveaumontant1);
+                else {
+                    amende1.setMontant(nouveaumontant1);
+                    amende1.setCategorie(categorie1);
+                    amende1 = amendeRepository.save(amende1);
+                }
             }
-            amende1.setMontant(nouveaumontant1);
+
         }
 
-        amende1.setCategorie(categorie1);
-        amende1 = amendeRepository.save(amende1);
+
 
         Categorie categorie2 = categorieRepository.findByCategorie(categorieamende2);
         Amende amende2 = new Amende();
@@ -134,16 +142,20 @@ public class InfractionController {
             nouveaumontant2 = new Montant(devise2,Long.parseLong(montant2));
             if (montantRepository.findByMontant(Long.parseLong(montant2)) == null) {
                 nouveaumontant2 = montantRepository.save(nouveaumontant2);
+                amende2.setMontant(nouveaumontant2);
+                amende2.setCategorie(categorie2);
+                amende2 = amendeRepository.save(amende2);
             } else {
                 nouveaumontant2 = montantRepository.findByMontant(Long.parseLong(montant2));
+                if (amendeRepository.findByMontant(nouveaumontant2) != null) amende2 = amendeRepository.findByMontant(nouveaumontant2);
+                else {
+                    amende2.setMontant(nouveaumontant2);
+                    amende2.setCategorie(categorie2);
+                    amende2 = amendeRepository.save(amende2);
+                }
             }
-            amende2.setMontant(nouveaumontant2);
+
         }
-
-
-
-        amende2.setCategorie(categorie2);
-        amende2 = amendeRepository.save(amende2);
 
         Infraction infraction = new Infraction();
         infraction.setAmendes(new ArrayList<>());
