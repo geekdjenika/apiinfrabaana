@@ -133,7 +133,11 @@ public class InfractionController {
                 amendeRepository.save(amende1);
             } else {
                 nouveaumontant1 = montantRepository.findByMontant(Long.parseLong(montant1));
-                if (amendeRepository.findByMontant(nouveaumontant1) != null) amende1 = amendeRepository.findByMontant(nouveaumontant1);
+                if (amendeRepository.findByMontant(nouveaumontant1) != null) {
+                    amende1 = amendeRepository.findByMontant(nouveaumontant1);
+                    amende1.getInfractions().add(infraction);
+                    amendeRepository.save(amende1);
+                }
                 else {
                     amende1.setMontant(nouveaumontant1);
                     amende1.setCategorie(categorie1);
