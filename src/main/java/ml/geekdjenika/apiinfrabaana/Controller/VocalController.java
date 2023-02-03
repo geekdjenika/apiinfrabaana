@@ -1,5 +1,7 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Configuration.Audio;
 import ml.geekdjenika.apiinfrabaana.Model.Vocal;
@@ -21,6 +23,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/vocal")
 @ToString
+@Api(value = "Endpoint qui permet de gérer les vocaux")
 public class VocalController {
 
     private final VocalService vocalService;
@@ -41,6 +44,7 @@ public class VocalController {
 
     @PostMapping("/add")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Ajouter un vocal")
     public Vocal addVocal(
             @Param("file") MultipartFile file,
             @Param("sujet") String sujet,

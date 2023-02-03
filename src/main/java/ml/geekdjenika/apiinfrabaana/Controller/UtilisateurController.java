@@ -1,5 +1,7 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Configuration.Image;
 import ml.geekdjenika.apiinfrabaana.Model.Utilisateur;
@@ -19,6 +21,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/user")
 @ToString
+@Api(value = "Endpoints pour gérer les utilisateurs")
 public class UtilisateurController {
 
     @Autowired
@@ -26,12 +29,14 @@ public class UtilisateurController {
 
     @GetMapping("/users")
     @PostAuthorize("hasAuthority('USER')")
+    @ApiOperation(value = "Get tous les utilisateurs")
     public List<Utilisateur> getAllUsers() {
         return utilisateurService.getAllUsers();
     }
 
     @DeleteMapping("/delete/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Supprimer un utilisateur")
     public String deleteUser(@PathVariable long id) {
         utilisateurService.deleteUser(id);
         return "Supprimé avec succès !";
@@ -39,6 +44,7 @@ public class UtilisateurController {
 
     @PutMapping("/update/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Modifier un utilisateur")
     public Optional<Utilisateur> update(
             @Param("username") String username,
             @Param("email") String email,

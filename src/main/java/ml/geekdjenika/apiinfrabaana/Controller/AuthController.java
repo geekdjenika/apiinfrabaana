@@ -1,5 +1,7 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Model.ERole;
 import ml.geekdjenika.apiinfrabaana.Model.Role;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
 @RestController
 @ToString
 @RequestMapping("/api/auth")
+@Api(value = "Endpoints pour l'authentification")
 public class AuthController {
 
     @Autowired
@@ -50,6 +53,7 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @PostMapping("/signin")
+    @ApiOperation(value = "Connecter un utilisateur")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -71,6 +75,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
+    @ApiOperation(value = "Inscrire un utilisateur")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (utilisateurRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity

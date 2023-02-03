@@ -1,5 +1,6 @@
 package ml.geekdjenika.apiinfrabaana;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Controller.AuthController;
 import ml.geekdjenika.apiinfrabaana.Model.Categorie;
@@ -24,7 +25,7 @@ import static ml.geekdjenika.apiinfrabaana.Model.ERole.ADMIN;
 @SpringBootApplication
 @ToString
 @CrossOrigin
-//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@OpenAPIDefinition
 public class ApiinfrabaanaApplication {
 
     public static void main(String[] args) {

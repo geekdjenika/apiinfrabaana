@@ -1,5 +1,7 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Model.Categorie;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.CategorieService;
@@ -13,6 +15,7 @@ import java.util.List;
 @RequestMapping("/api/categorie")
 @CrossOrigin(origins = "*", maxAge = 3600)
 @ToString
+@Api(value = "Endpoints pour les infractions")
 public class CategorieController {
 
     @Autowired
@@ -20,12 +23,14 @@ public class CategorieController {
 
     @GetMapping("/get/all")
     @PostAuthorize("hasAuthority('USER')")
+    @ApiOperation(value = "Get all toutes les catégories")
     public List<Categorie> getAllCategorie() {
         return categorieService.getAll();
     }
 
     @GetMapping("/get/{id}")
     @PostAuthorize("hasAuthority('USER')")
+    @ApiOperation(value = "Get une catégorie")
     public Categorie getCategorie(@PathVariable long id) {
         return categorieService.getCategorie(id);
     }

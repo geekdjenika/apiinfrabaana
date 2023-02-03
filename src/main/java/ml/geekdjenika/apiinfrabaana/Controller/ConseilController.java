@@ -1,5 +1,7 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Configuration.Audio;
 import ml.geekdjenika.apiinfrabaana.Model.*;
@@ -22,6 +24,7 @@ import java.util.Optional;
 @RequestMapping("/api/conseil")
 @CrossOrigin(origins = "*", maxAge = 3600)
 @ToString
+@Api(value = "Endpoints pour le crud des conseils")
 public class ConseilController {
     @Autowired
     private InfractionRepository infractionRepository;
@@ -40,6 +43,7 @@ public class ConseilController {
 
     @PostMapping("/add")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Ajouter un conseil")
     public Conseil addConseil(
             @Param("conseil") String conseil,
             @Param("infraction") String infraction,
@@ -83,18 +87,21 @@ public class ConseilController {
 
     @GetMapping("/get/{id}")
     @PostAuthorize("hasAuthority('USER')")
+    @ApiOperation(value = "Get un conseil")
     public Conseil getInfraction(@PathVariable long id) {
         return conseilService.getConseil(id);
     }
 
     @GetMapping("/get/all")
     @PostAuthorize("hasAuthority('USER')")
+    @ApiOperation(value = "Get tous les conseils")
     public List<Conseil> getAllInfractions() {
         return conseilService.getAll();
     }
 
     @PutMapping("/update/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Modifier un conseil")
     public Optional<Conseil> updateInfraction(
             @Param("conseil") String conseil,
             @Param("infraction") String infraction,
@@ -125,6 +132,7 @@ public class ConseilController {
 
     @DeleteMapping("/delete/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Supprimer un conseil")
     public String deleteInfraction(@PathVariable long id) {
         conseilService.delete(id);
         return "Conseil supprimé avec succès !";

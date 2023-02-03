@@ -1,5 +1,7 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Configuration.Audio;
 import ml.geekdjenika.apiinfrabaana.Configuration.Excel;
@@ -24,6 +26,7 @@ import java.util.Optional;
 @RequestMapping("/api/infraction")
 @CrossOrigin(origins = "*", maxAge = 3600)
 @ToString
+@Api(value = "Endpoints qui gèrent les infractions")
 public class InfractionController {
 
     @Autowired
@@ -48,6 +51,7 @@ public class InfractionController {
 
     @PostMapping("/add/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Ajouter une infarction")
     public Infraction addInfraction(
             @Param("description") String description,
             @Param("reference") String reference,
@@ -99,6 +103,7 @@ public class InfractionController {
 
     @PostMapping("/addsuper/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Ajouter une infraction avancé")
     public Infraction superAddInfraction(
             @Param("description") String description,
             @Param("reference") String reference,
@@ -197,24 +202,28 @@ public class InfractionController {
 
     @GetMapping("/get/{id}")
     @PostAuthorize("hasAuthority('USER')")
+    @ApiOperation(value = "Get une infraction")
     public Infraction getInfraction(@PathVariable long id) {
         return infractionService.getInfraction(id);
     }
 
     @GetMapping("/get/all")
     @PostAuthorize("hasAuthority('USER')")
+    @ApiOperation(value = "Get all infractions")
     public List<Infraction> getAllInfractions() {
         return infractionService.getAll();
     }
 
     @GetMapping("/get/allbyamende")
     @PostAuthorize("hasAuthority('USER')")
+    @ApiOperation(value = "Get all infractions by amende")
     public List<Infraction> getAllInfractionsByUser(@PathVariable long id) {
         return infractionService.getAllByUser(utilisateurRepository.findById(id).get());
     }
 
     @PutMapping("/update/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Modifier une infaction")
     public Optional<Infraction> updateInfraction(
             @Param("description") String description,
             @Param("reference") String reference,
@@ -248,6 +257,7 @@ public class InfractionController {
 
     @DeleteMapping("/delete/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Supprimer une infraction")
     public String deleteInfraction(@PathVariable long id) {
         infractionService.delete(id);
         return "Infraction supprimée avec succès !";
@@ -255,12 +265,14 @@ public class InfractionController {
 
     @GetMapping("/get/allbycategorie")
     @PostAuthorize("hasAuthority('USER')")
+    @ApiOperation(value = "Get all infractions by amende v2")
     public List<Infraction> getInfractionsByCategory(@Param("categorie") String categorie) {
         return infractionService.getAllByCategorie(categorie);
     }
 
     @PostMapping("/importer/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Importer une liste d'infractions")
     public List<ExcelDto> importer(@Param("excel") MultipartFile excel, @PathVariable long id) throws IOException {
         List<ExcelDto> excelDtos = Excel.importer(excel);
         for (ExcelDto exceldata :

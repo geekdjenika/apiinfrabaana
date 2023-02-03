@@ -1,5 +1,7 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Model.Question;
 import ml.geekdjenika.apiinfrabaana.Model.Quiz;
@@ -18,6 +20,7 @@ import java.util.*;
 @RequestMapping("/api/quiz")
 @CrossOrigin(origins = "*", maxAge = 3600)
 @ToString
+@Api(value = "Endpoints pour les quiz et questions")
 public class QuizController {
 
 
@@ -34,24 +37,28 @@ public class QuizController {
 
     @GetMapping("/questions")
     @PostAuthorize("hasAuthority('USER')")
+    @ApiOperation(value = "Get all les questions")
     public List<Question> getAllQuestion() {
         return questionService.getAllQuestions();
     }
 
     @GetMapping("/question/{qname}")
     @PostAuthorize("hasAuthority('USER')")
+    @ApiOperation(value = "Get une question")
     public Question getQuestion(@PathVariable String qname) {
         return questionService.getQuestion(qname);
     }
 
     @GetMapping("/questionid/{id}")
     @PostAuthorize("hasAuthority('USER')")
+    @ApiOperation(value = "Get une question")
     public Optional<Question> getQuestion(@PathVariable long id) {
         return questionService.getQuestion(id);
     }
 
     @PostMapping("/question/add/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Ajouter une question")
     public Question addQuestion(@RequestBody Question question, @PathVariable long id) {
         question.setUtilisateur(new Utilisateur(id));
         return questionService.addQuestion(question);
@@ -59,6 +66,7 @@ public class QuizController {
 
     @PutMapping("/question/update/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Modifier une question")
     public Optional<Question> updateQuestion(
             @Param("question") String question,
             @Param("reponse") String reponse,
@@ -83,6 +91,7 @@ public class QuizController {
 
     @DeleteMapping("/question/delete/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Supprimer une question")
     public String deleteQuestion(@PathVariable long id) {
         questionService.deleteQuestion(id);
         return "Question supprimée avec succès !";
@@ -90,6 +99,7 @@ public class QuizController {
 
     @PostMapping("/reponse/add/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Ajouter des réponses à une question")
     public String addReponses(
             @PathVariable long id,
             @Param("reponse1") String reponse1,
@@ -107,24 +117,28 @@ public class QuizController {
     // #QUIZ####################    Q#U#I#Z   ####################QUIZ#
     @PostMapping("/add")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Ajouter un quiz")
     public Quiz addQuiz(@RequestBody Quiz quiz) {
         return quizService.addQuiz(quiz);
     }
 
     @GetMapping("/get/{id}")
     @PostAuthorize("hasAuthority('USER')")
+    @ApiOperation(value = "Get un quiz")
     public Quiz getQuiz(@PathVariable long id) {
         return quizService.getQuiz(id);
     }
 
     @GetMapping("/get/all")
     @PostAuthorize("hasAuthority('USER')")
+    @ApiOperation(value = "Get tous les quiz")
     public List<Quiz> getAllQuiz(){
         return quizService.getAllQuiz();
     }
 
     @PostMapping("/addqtoq/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Ajouter une question à un quiz")
     public String addQuestionToQuiz(@Param("question") String question, @PathVariable long id) {
 
         quizService.addQuestionToQuiz(question,id);
@@ -133,6 +147,7 @@ public class QuizController {
 
     @PostMapping("/addquestion/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Ajouter une question à un quiz v2")
     public String addQuestionToQuiz(@RequestBody Question question, @PathVariable long id) {
         quizService.addQuestionToQuiz(question,id);
         return question + " ajoutée au quiz avec succès !";
@@ -140,6 +155,7 @@ public class QuizController {
 
     @PostMapping("/addquestions/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Ajouter des questions à un quiz")
     public String addQuestionsToQuiz(@Param("question1") String question1,
                                      @Param("question2") String question2,
                                      @Param("question3") String question3,
@@ -154,12 +170,14 @@ public class QuizController {
 
     @PutMapping("/update/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Modifier un quiz")
     public Optional<Quiz> updateQuiz(@RequestBody Quiz quiz, @PathVariable long id){
         return quizService.updateQuiz(quiz, id);
     }
 
     @DeleteMapping("/delete/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation(value = "Supprimer un quiz")
     public String deleteQuiz(@PathVariable long id) {
         quizService.deleteQuiz(id);
         return "Quiz supprimé avec succès !";
@@ -167,6 +185,7 @@ public class QuizController {
 
     @PostAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/removequestion/{id}")
+    @ApiOperation(value = "Supprimer une question d'un quiz")
     public String removeQuestionToQuiz(@Param("question") String question, @PathVariable long id) {
         quizService.removeQuestionToQuiz(question,id);
         return "Question supprimée de " + quizService.getQuiz(id).getLabel();
