@@ -98,11 +98,28 @@ public class ConseilController {
     public Optional<Conseil> updateInfraction(
             @Param("conseil") String conseil,
             @Param("infraction") String infraction,
-            @PathVariable long id
-            ) {
+            @PathVariable long id,
+            @Param("file")MultipartFile file,
+            @Param("langue") String langue
+            ) throws IOException {
         Conseil conseil1 = new Conseil();
         conseil1.setConseil(conseil);
         if (infractionRepository.findByDescription(infraction) != null) conseil1.getInfractions().add(infractionRepository.findByDescription(infraction));
+        if (file != null) {
+            //Vocal
+            String uploadDir = System.getProperty("user.dir") + "/assets/aud";
+            //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
+            File convFile = new File(file.getOriginalFilename());
+            FileOutputStream fos = new FileOutputStream(convFile);
+            fos.write(file.getBytes());
+            fos.close();
+            Audio.saveAudio(uploadDir, convFile);
+            Vocal vocal = new Vocal();
+            if (langueRepository.findByLabel(langue) != null) vocal.setLangue(langueRepository.findByLabel(langue));
+            vocal.setConseil(conseil1);
+            vocal.setVocal(file.getOriginalFilename());
+            vocalService.addVocal(vocal);
+        }
         return conseilService.update(conseil1,id);
     }
 

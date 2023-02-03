@@ -220,12 +220,29 @@ public class InfractionController {
             @Param("reference") String reference,
             @Param("amende1") Long amende1,
             @Param("amende2") Long amende2,
-            @PathVariable long id) {
+            @Param("file")MultipartFile file,
+            @Param("langue") String langue,
+            @PathVariable long id) throws IOException {
         Infraction infraction = new Infraction();
         infraction.setDescription(description);
         infraction.setReference(reference);
         if (amende1 != null) infraction.getAmendes().add(amendeRepository.findByMontant(montantRepository.findByMontant(amende1)));
         if (amende2 != null) infraction.getAmendes().add(amendeRepository.findByMontant(montantRepository.findByMontant(amende2)));
+        if (file != null) {
+            //Vocal
+            String uploadDir = System.getProperty("user.dir") + "/assets/aud";
+            //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
+            File convFile = new File(file.getOriginalFilename());
+            FileOutputStream fos = new FileOutputStream(convFile);
+            fos.write(file.getBytes());
+            fos.close();
+            Audio.saveAudio(uploadDir, convFile);
+            Vocal vocal = new Vocal();
+            if (langueRepository.findByLabel(langue) != null) vocal.setLangue(langueRepository.findByLabel(langue));
+            vocal.setInfraction(infraction);
+            vocal.setVocal(file.getOriginalFilename());
+            vocalService.addVocal(vocal);
+        }
         return infractionService.update(infraction,id);
     }
 
