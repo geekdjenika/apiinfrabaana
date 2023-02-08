@@ -8,6 +8,8 @@ import java.util.List;
 public class Audio {
     private static final List<String> AUDIO_EXTENSIONS = Arrays.asList(".mp3", ".wav", ".ogg", ".flac", ".m4a");
 
+    public static final String SOURCE_DIR = "C:\\Users\\djeni\\IdeaProjects\\infrakunafoni\\assets\\";
+
     public static void saveAudio(String uploadDir, File file) {
         // Parcourez les fichiers dans le répertoire source
         for (String extension : AUDIO_EXTENSIONS) {

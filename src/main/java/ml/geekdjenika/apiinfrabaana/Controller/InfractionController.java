@@ -79,7 +79,7 @@ public class InfractionController {
 
         if (file != null) {
             //Vocal
-            String uploadDir = System.getProperty("user.dir") + "/assets/aud";
+            String uploadDir = Audio.SOURCE_DIR+"aud";//System.getProperty("user.dir") + "/assets/aud";
             //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
             File convFile = new File(file.getOriginalFilename());
             FileOutputStream fos = new FileOutputStream(convFile);
@@ -178,7 +178,7 @@ public class InfractionController {
 
         if (file != null) {
             //Vocal
-            String uploadDir = System.getProperty("user.dir") + "/assets/aud";
+            String uploadDir = Audio.SOURCE_DIR+"aud";//System.getProperty("user.dir") + "/assets/aud";
             //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
             File convFile = new File(file.getOriginalFilename());
             FileOutputStream fos = new FileOutputStream(convFile);
@@ -223,14 +223,14 @@ public class InfractionController {
             @Param("file")MultipartFile file,
             @Param("langue") String langue,
             @PathVariable long id) throws IOException {
-        Infraction infraction = new Infraction();
-        infraction.setDescription(description);
-        infraction.setReference(reference);
+        Infraction infraction = infractionRepository.findById(id).get();
+        if (description !=null) infraction.setDescription(description);
+        if (reference !=null) infraction.setReference(reference);
         if (amende1 != null) infraction.getAmendes().add(amendeRepository.findByMontant(montantRepository.findByMontant(amende1)));
         if (amende2 != null) infraction.getAmendes().add(amendeRepository.findByMontant(montantRepository.findByMontant(amende2)));
         if (file != null) {
             //Vocal
-            String uploadDir = System.getProperty("user.dir") + "/assets/aud";
+            String uploadDir = Audio.SOURCE_DIR+"aud";//System.getProperty("user.dir") + "/assets/aud";
             //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
             File convFile = new File(file.getOriginalFilename());
             FileOutputStream fos = new FileOutputStream(convFile);

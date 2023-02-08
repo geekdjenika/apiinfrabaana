@@ -45,7 +45,7 @@ public class VocalController {
             @Param("file") MultipartFile file,
             @Param("sujet") String sujet,
             @Param("langue") String langue) throws IOException {
-        String uploadDir = System.getProperty("user.dir") + "/assets/aud";
+        String uploadDir = Audio.SOURCE_DIR+"aud";//System.getProperty("user.dir") + "/assets/aud";
         //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
         File convFile = new File(file.getOriginalFilename());
         FileOutputStream fos = new FileOutputStream(convFile);

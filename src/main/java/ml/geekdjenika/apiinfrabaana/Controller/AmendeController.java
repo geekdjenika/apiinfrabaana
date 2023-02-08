@@ -101,7 +101,7 @@ public class AmendeController {
 
         if (file != null) {
             //Vocal
-            String uploadDir = System.getProperty("user.dir") + "/assets/aud";
+            String uploadDir = Audio.SOURCE_DIR+"aud";//System.getProperty("user.dir") + "/assets/aud";
             //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
             File convFile = new File(file.getOriginalFilename());
             FileOutputStream fos = new FileOutputStream(convFile);
@@ -139,12 +139,12 @@ public class AmendeController {
             @PathVariable long id,
             @Param("file")MultipartFile file,
             @Param("langue") String langue) throws IOException {
-        Amende amende = new Amende();
+        Amende amende = amendeRepository.findById(id).get();
         amende.setCategorie(categorieRepository.findByCategorie(type));;
         if (montantRepository.findByMontant(montant) != null) amende.setMontant(montantRepository.findByMontant(montant));
         if (file != null) {
             //Vocal
-            String uploadDir = System.getProperty("user.dir") + "/assets/aud";
+            String uploadDir = Audio.SOURCE_DIR+"aud";//System.getProperty("user.dir") + "/assets/aud";
             //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
             File convFile = new File(file.getOriginalFilename());
             FileOutputStream fos = new FileOutputStream(convFile);

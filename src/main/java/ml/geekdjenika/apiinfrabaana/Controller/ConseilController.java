@@ -37,6 +37,8 @@ public class ConseilController {
     private UtilisateurRepository utilisateurRepository;
     @Autowired
     private NotificationRepository notificationRepository;
+    @Autowired
+    private ConseilRepository conseilRepository;
 
     @PostMapping("/add")
     @PostAuthorize("hasAuthority('ADMIN')")
@@ -63,7 +65,7 @@ public class ConseilController {
 
         if (file != null) {
             //Vocal
-            String uploadDir = System.getProperty("user.dir") + "/assets/aud";
+            String uploadDir = Audio.SOURCE_DIR+"aud";//System.getProperty("user.dir") + "/assets/aud";
             //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
             File convFile = new File(file.getOriginalFilename());
             FileOutputStream fos = new FileOutputStream(convFile);
@@ -102,12 +104,12 @@ public class ConseilController {
             @Param("file")MultipartFile file,
             @Param("langue") String langue
             ) throws IOException {
-        Conseil conseil1 = new Conseil();
+        Conseil conseil1 = conseilRepository.findById(id).get();
         conseil1.setConseil(conseil);
         if (infractionRepository.findByDescription(infraction) != null) conseil1.getInfractions().add(infractionRepository.findByDescription(infraction));
         if (file != null) {
             //Vocal
-            String uploadDir = System.getProperty("user.dir") + "/assets/aud";
+            String uploadDir = Audio.SOURCE_DIR+"aud";//System.getProperty("user.dir") + "/assets/aud";
             //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
             File convFile = new File(file.getOriginalFilename());
             FileOutputStream fos = new FileOutputStream(convFile);
