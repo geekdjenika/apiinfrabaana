@@ -1,13 +1,11 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
 import lombok.ToString;
-import ml.geekdjenika.apiinfrabaana.Model.Question;
-import ml.geekdjenika.apiinfrabaana.Model.Quiz;
-import ml.geekdjenika.apiinfrabaana.Model.Reponse;
-import ml.geekdjenika.apiinfrabaana.Model.Utilisateur;
+import ml.geekdjenika.apiinfrabaana.Model.*;
 import ml.geekdjenika.apiinfrabaana.Repository.UtilisateurRepository;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.QuestionService;
 import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.QuizService;
+import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.SessionJeuService;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +23,14 @@ public class QuizController {
     private final QuizService quizService;
     private final UtilisateurRepository utilisateurRepository;
 
+    private final SessionJeuService sessionJeuService;
+
     public QuizController(QuestionService questionService, QuizService quizService,
-                          UtilisateurRepository utilisateurRepository) {
+                          UtilisateurRepository utilisateurRepository, SessionJeuService sessionJeuService) {
         this.questionService = questionService;
         this.quizService = quizService;
         this.utilisateurRepository = utilisateurRepository;
+        this.sessionJeuService = sessionJeuService;
     }
 
     @GetMapping("/questions")
@@ -170,6 +171,25 @@ public class QuizController {
     public String removeQuestionToQuiz(@Param("question") String question, @PathVariable long id) {
         quizService.removeQuestionToQuiz(question,id);
         return "Question supprimée de " + quizService.getQuiz(id).getLabel();
+    }
+
+    //#############SessionJeu#######################SessionJeu###################SessionJeu###########################SessionJeu######################
+    @PostMapping("/score/add/{quiz}/{utilisateur}")
+    @PostAuthorize("hasAuthority('USER')")
+    public SessionJeu addSessionJeu(@RequestBody SessionJeu sessionJeu,@PathVariable Quiz quiz,@PathVariable Utilisateur utilisateur) {
+        //Utilisateur utilisateur1 = utilisateurRepository.findById(utilisateur.getId()).get();
+        sessionJeu.setDate(new Date());
+        sessionJeu.setQuiz(quiz);
+        sessionJeu.setUtilisateur(utilisateur);
+        //utilisateur1.getSessionJeux().add(sessionJeu);
+        //utilisateurRepository.save(utilisateur1);
+        return sessionJeuService.add(sessionJeu);
+    }
+
+    @GetMapping("/score/get/all")
+    @PostAuthorize("hasAuthority('USER')")
+    public List<SessionJeu> getAllSessionJeu() {
+        return sessionJeuService.getAll();
     }
 
 }

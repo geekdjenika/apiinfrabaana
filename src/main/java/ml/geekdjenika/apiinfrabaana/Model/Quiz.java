@@ -25,7 +25,4 @@ public class Quiz {
     @ManyToMany
     private Collection<Question> questions = new ArrayList<>();
 
-    @ManyToMany
-    private Collection<Utilisateur> joueurs = new ArrayList<>();
-
 }
