@@ -33,4 +33,9 @@ public class Question {
     public Question(long id) {
         this.id = id;
     }
+
+    public Question(String question, String reponse) {
+        this.question = question;
+        this.reponse = reponse;
+    }
 }

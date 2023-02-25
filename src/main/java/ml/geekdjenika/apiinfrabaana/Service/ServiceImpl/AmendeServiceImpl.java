@@ -39,8 +39,9 @@ public class AmendeServiceImpl implements AmendeService {
     public Optional<Amende> updateFine(Amende amende, long id) {
         return amendeRepository.findById(id).map(
                 amende1 -> {
-                    amende.setCategorie(amende.getCategorie());
+                    amende1.setCategorie(amende.getCategorie());
                     amende1.setMontant(amende.getMontant());
+                    amende1.setVocals(amende.getVocals());
                     return amendeRepository.save(amende1);
                 }
         );

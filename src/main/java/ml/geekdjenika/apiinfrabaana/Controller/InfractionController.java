@@ -74,7 +74,7 @@ public class InfractionController {
         }
 
 
-        infraction.setUtilisateur(utilisateurRepository.findById(id).get());
+        //infraction.setUtilisateur(utilisateurRepository.findById(id).get());
         infraction = infractionService.addInfraction(infraction);
 
         if (file != null) {
@@ -97,7 +97,7 @@ public class InfractionController {
 
     }
 
-    @PostMapping("/addsuper/{id}")
+    @PostMapping("/addsuper")
     @PostAuthorize("hasAuthority('ADMIN')")
     public Infraction superAddInfraction(
             @Param("description") String description,
@@ -109,12 +109,11 @@ public class InfractionController {
             @Param("devise2") String devise2,
             @Param("montant2") String montant2,
             @Param("file") MultipartFile file,
-            @Param("langue") String langue,
-            @PathVariable long id
+            @Param("langue") String langue
     ) throws IOException {
 
         Infraction infraction = new Infraction();
-        infraction.setUtilisateur(utilisateurRepository.findById(id).get());
+        //infraction.setUtilisateur(utilisateurRepository.findById(id).get());
         infraction.setDescription(description);
         infraction.setReference(reference);
 
@@ -207,12 +206,6 @@ public class InfractionController {
         return infractionService.getAll();
     }
 
-    @GetMapping("/get/allbyamende")
-    @PostAuthorize("hasAuthority('USER')")
-    public List<Infraction> getAllInfractionsByUser(@PathVariable long id) {
-        return infractionService.getAllByUser(utilisateurRepository.findById(id).get());
-    }
-
     @PutMapping("/update/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
     public Optional<Infraction> updateInfraction(
@@ -259,9 +252,9 @@ public class InfractionController {
         return infractionService.getAllByCategorie(categorie);
     }
 
-    @PostMapping("/importer/{id}")
+    @PostMapping("/importer")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public List<ExcelDto> importer(@Param("excel") MultipartFile excel, @PathVariable long id) throws IOException {
+    public List<ExcelDto> importer(@Param("excel") MultipartFile excel) throws IOException {
         List<ExcelDto> excelDtos = Excel.importer(excel);
         for (ExcelDto exceldata :
                 excelDtos) {
@@ -275,8 +268,7 @@ public class InfractionController {
                     exceldata.getDevise2(),
                     exceldata.getMontant2(),
                     null,
-                    null,
-                    id);
+                    null);
         }
         return excelDtos;
     }

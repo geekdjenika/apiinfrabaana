@@ -23,10 +23,10 @@ public class Conseil {
 
     private String conseil;
 
-    @OneToMany(mappedBy = "conseil")
+    @OneToMany(mappedBy = "conseil", cascade = CascadeType.REMOVE)
     private List<Vocal> vocals = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     Collection<Infraction> infractions = new ArrayList<>();
 
 }

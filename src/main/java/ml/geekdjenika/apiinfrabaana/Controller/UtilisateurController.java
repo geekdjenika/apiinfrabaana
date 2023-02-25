@@ -53,4 +53,10 @@ public class UtilisateurController {
         return utilisateurService.updateUser(utilisateur,id);
     }
 
+    @GetMapping("/{utilisateur}")
+    @PostAuthorize("hasAuthority('USER')")
+    public Utilisateur getUtilisateur(@PathVariable Utilisateur utilisateur) {
+        return utilisateurService.getUtilisateur(utilisateur.getId());
+    }
+
 }

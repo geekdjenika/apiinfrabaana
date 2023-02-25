@@ -25,13 +25,11 @@ public class Infraction {
 
     private String reference;
 
-    @OneToMany(mappedBy = "infraction")
+    @OneToMany(mappedBy = "infraction", cascade = CascadeType.REMOVE)
     private List<Vocal> vocals = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "infractions")
+    @ManyToMany(mappedBy = "infractions", cascade = CascadeType.REMOVE)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Amende> amendes = new ArrayList<>();
 
-    @ManyToOne
-    private  Utilisateur utilisateur;
 }

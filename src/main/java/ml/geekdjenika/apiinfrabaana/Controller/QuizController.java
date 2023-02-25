@@ -153,6 +153,20 @@ public class QuizController {
                 "] ajoutées au quiz avec succès !";
     }
 
+    @PostMapping("/addquestion/super/{id}")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public Question superAddQuestion(@Param("question") String question,
+                                     @Param("reponse") String reponse,
+                                     @Param("mreponse1") String mreponse1,
+                                     @Param("mreponse2") String mreponse2,
+                                     @Param("mreponse3") String mreponse3,
+                                     @PathVariable long id) {
+        addQuestion(new Question(question,reponse),id);
+        Question maquestion = questionService.getQuestion(question);
+        addReponses(maquestion.getId(),mreponse1,mreponse2,mreponse3);
+        return maquestion;
+    }
+
     @PutMapping("/update/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
     public Optional<Quiz> updateQuiz(@RequestBody Quiz quiz, @PathVariable long id){

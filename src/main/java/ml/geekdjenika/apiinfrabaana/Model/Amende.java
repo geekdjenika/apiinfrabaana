@@ -29,10 +29,10 @@ public class Amende {
     @ManyToOne
     private Montant montant;
 
-    @OneToMany(mappedBy = "amende")
+    @OneToMany(mappedBy = "amende", cascade = CascadeType.REMOVE)
     private List<Vocal> vocals = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     private List<Infraction> infractions = new ArrayList<>();
 
     public Amende(long id) {

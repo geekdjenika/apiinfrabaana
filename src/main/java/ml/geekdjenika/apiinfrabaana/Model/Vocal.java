@@ -21,18 +21,18 @@ public class Vocal {
 
     private String vocal;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Langue langue;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Conseil conseil;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Infraction infraction;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Amende amende;
 }

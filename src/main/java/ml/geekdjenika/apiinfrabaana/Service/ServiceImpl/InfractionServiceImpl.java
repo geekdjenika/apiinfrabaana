@@ -34,11 +34,6 @@ public class InfractionServiceImpl implements InfractionService{
     }
 
     @Override
-    public List<Infraction> getAllByUser(Utilisateur utilisateur) {
-        return infractionRepository.findByUtilisateur(utilisateur);
-    }
-
-    @Override
     public List<Infraction> getAllByCategorie(String categorie) {
         return infraRepository.findInfractionsByCategory(categorie);
     }
@@ -50,7 +45,8 @@ public class InfractionServiceImpl implements InfractionService{
                     infractionamodifier.setDescription(infraction.getDescription());
                     infractionamodifier.setReference(infraction.getReference());
                     infractionamodifier.setAmendes(infraction.getAmendes());
-                    infractionamodifier.setUtilisateur(infraction.getUtilisateur());
+                    infractionamodifier.setVocals(infraction.getVocals());
+                    //infractionamodifier.setUtilisateur(infraction.getUtilisateur());
                     return infractionRepository.save(infractionamodifier);
                 }
         );

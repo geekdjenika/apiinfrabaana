@@ -41,6 +41,7 @@ public class ConseilServiceImpl implements ConseilService{
                 conseilamodifier -> {
                     conseilamodifier.setConseil(conseil.getConseil());
                     if (!conseil.getInfractions().isEmpty()) conseilamodifier.setInfractions(conseil.getInfractions());
+                    conseilamodifier.setVocals(conseil.getVocals());
                     return conseilRepository.save(conseilamodifier);
                 }
         );

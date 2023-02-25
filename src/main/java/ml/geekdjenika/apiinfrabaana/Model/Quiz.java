@@ -22,7 +22,7 @@ public class Quiz {
 
     private String label;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     private Collection<Question> questions = new ArrayList<>();
 
 }

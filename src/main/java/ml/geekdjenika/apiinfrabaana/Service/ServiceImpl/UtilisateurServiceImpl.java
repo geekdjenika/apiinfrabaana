@@ -26,6 +26,11 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     }
 
     @Override
+    public Utilisateur getUtilisateur(long id) {
+        return utilisateurRepository.findById(id).get();
+    }
+
+    @Override
     public void deleteUser(long id) {
         Utilisateur utilisateurasupprimer = utilisateurRepository.findById(id).orElse(null);
         if (utilisateurasupprimer != null) utilisateurRepository.deleteById(id);

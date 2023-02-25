@@ -12,7 +12,6 @@ public interface InfractionService {
     Infraction addInfraction(Infraction infraction);
     Infraction getInfraction(long id);
     List<Infraction> getAll();
-    List<Infraction> getAllByUser(Utilisateur utilisateur);
     List<Infraction> getAllByCategorie(String categorie);
     Optional<Infraction> update(Infraction infraction, long id);
     void delete(long id);
