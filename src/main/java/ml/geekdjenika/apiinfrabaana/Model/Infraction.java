@@ -21,6 +21,7 @@ public class Infraction {
     @Column(name = "id", nullable = false)
     private long id;
 
+    @Column(length = 1000)
     private String description;
 
     private String reference;

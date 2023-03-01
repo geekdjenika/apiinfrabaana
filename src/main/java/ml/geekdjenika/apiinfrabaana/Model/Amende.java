@@ -32,7 +32,7 @@ public class Amende {
     @OneToMany(mappedBy = "amende", cascade = CascadeType.REMOVE)
     private List<Vocal> vocals = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany
     private List<Infraction> infractions = new ArrayList<>();
 
     public Amende(long id) {

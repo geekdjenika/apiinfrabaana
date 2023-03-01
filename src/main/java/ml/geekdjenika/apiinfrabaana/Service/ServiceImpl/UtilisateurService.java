@@ -13,6 +13,8 @@ public interface UtilisateurService {
 
     void deleteUser(long id);
 
+    Utilisateur rendreAdmin(long id);
+
     List<Utilisateur> getAllUsers();
 
 }

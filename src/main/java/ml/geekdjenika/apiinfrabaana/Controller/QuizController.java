@@ -145,9 +145,9 @@ public class QuizController {
                                      @Param("question2") String question2,
                                      @Param("question3") String question3,
                                      @PathVariable long id) {
-        quizService.addQuestionToQuiz(question1,id);
-        quizService.addQuestionToQuiz(question2,id);
-        quizService.addQuestionToQuiz(question3,id);
+        if (!quizService.getQuiz(id).getQuestions().contains(questionService.getQuestion(question1))) quizService.addQuestionToQuiz(question1,id);
+        if (!quizService.getQuiz(id).getQuestions().contains(questionService.getQuestion(question2))) quizService.addQuestionToQuiz(question2,id);
+        if (!quizService.getQuiz(id).getQuestions().contains(questionService.getQuestion(question3))) quizService.addQuestionToQuiz(question3,id);
 
         return "Questions : [" + question1 + question2 + question3 +
                 "] ajoutées au quiz avec succès !";

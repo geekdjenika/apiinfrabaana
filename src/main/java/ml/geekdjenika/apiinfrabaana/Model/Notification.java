@@ -18,5 +18,6 @@ public class Notification {
     @Column(name = "id", nullable = false)
     private long id;
 
+    @Column(length = 2000)
     private String description;
 }

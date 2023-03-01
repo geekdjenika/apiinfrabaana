@@ -59,4 +59,10 @@ public class UtilisateurController {
         return utilisateurService.getUtilisateur(utilisateur.getId());
     }
 
+    @PutMapping("/admin/{id}")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public Utilisateur rendreAdmin(@PathVariable long id) {
+        return utilisateurService.rendreAdmin(id);
+    }
+
 }

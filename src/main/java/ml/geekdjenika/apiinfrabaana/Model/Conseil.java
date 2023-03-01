@@ -21,6 +21,7 @@ public class Conseil {
     @Column(name = "id", nullable = false)
     private long id;
 
+    @Column(length = 1000)
     private String conseil;
 
     @OneToMany(mappedBy = "conseil", cascade = CascadeType.REMOVE)
