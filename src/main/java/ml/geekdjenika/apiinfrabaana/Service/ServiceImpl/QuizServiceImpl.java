@@ -48,8 +48,9 @@ public class QuizServiceImpl implements QuizService{
     @Override
     public void addQuestionToQuiz(String question, long id) {
         Quiz quiz = quizRepository.findById(id).get();
-        Question questionaajt = questionRepository.findByQuestion(question);
-        quiz.getQuestions().add(questionaajt);
+        Question questionaajoutee = questionRepository.findByQuestion(question);
+        quiz.getQuestions().add(questionaajoutee);
+        quizRepository.save(quiz);
     }
 
     @Override
@@ -59,6 +60,7 @@ public class QuizServiceImpl implements QuizService{
                 questions) {
             quiz.getQuestions().add(questionRepository.findByQuestion(question));
         }
+        quizRepository.save(quiz);
     }
 
     @Override
