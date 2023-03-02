@@ -60,6 +60,7 @@ public class ConseilController {
         for (Utilisateur utilisateur :
                 utilisateurRepository.findAll()) {
             utilisateur.getNotifications().add(notification);
+            utilisateurRepository.save(utilisateur);
         }
 
 
