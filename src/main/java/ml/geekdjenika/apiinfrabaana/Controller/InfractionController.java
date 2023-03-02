@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,26 +51,10 @@ public class InfractionController {
             @Param("description") String description,
             @Param("reference") String reference,
             @Param("file") MultipartFile file,
-            @Param("langue") String langue,
-            @Param("amende1") String amende1,
-            @Param("amende2") String amende2,
-            @PathVariable long id) throws IOException {
+            @Param("langue") String langue) throws IOException {
         Infraction infraction = new Infraction();
         infraction.setDescription(description);
         infraction.setReference(reference);
-        infraction.setAmendes(new ArrayList<>());
-
-        //Amende 1
-        if (amende1 != null) {
-            if (montantRepository.findByMontant(Long.parseLong(amende1)) != null)
-                if (amendeRepository.findByMontant(montantRepository.findByMontant(Long.parseLong(amende1))) != null) infraction.getAmendes().add(amendeRepository.findByMontant(montantRepository.findByMontant(Long.parseLong(amende1))));
-        }
-
-        //Amende 2
-        if (amende2 != null) {
-            if (montantRepository.findByMontant(Long.parseLong(amende2)) != null)
-                if (amendeRepository.findByMontant(montantRepository.findByMontant(Long.parseLong(amende2))) != null) infraction.getAmendes().add(amendeRepository.findByMontant(montantRepository.findByMontant(Long.parseLong(amende2))));
-        }
 
 
         //infraction.setUtilisateur(utilisateurRepository.findById(id).get());
@@ -117,21 +100,26 @@ public class InfractionController {
         infraction.setDescription(description);
         infraction.setReference(reference);
 
-        infraction = infractionService.superAdd(infraction);
+        infractionService.superAdd(infraction);
+        infraction = infractionRepository.findByDescription(description);
 
         Categorie categorie1 = categorieRepository.findByCategorie(categorieamende1);
         Amende amende1 = new Amende();
+        //Montant 1
         Montant nouveaumontant1;
         if (((montant1) != null) || (devise1 != null)) {
             nouveaumontant1 = new Montant(devise1,Long.parseLong(montant1));
             if (montantRepository.findByMontant(Long.parseLong(montant1)) == null) {
-                nouveaumontant1 = montantRepository.save(nouveaumontant1);
+                montantRepository.save(nouveaumontant1);
+                nouveaumontant1 = montantRepository.findByMontant(Long.parseLong(montant1));
+                //Amende 1
                 amende1.setMontant(nouveaumontant1);
                 amende1.setCategorie(categorie1);
                 amende1.getInfractions().add(infraction);
                 amendeRepository.save(amende1);
             } else {
                 nouveaumontant1 = montantRepository.findByMontant(Long.parseLong(montant1));
+                //Amende 1
                 if (amendeRepository.findByMontant(nouveaumontant1) != null) {
                     amende1 = amendeRepository.findByMontant(nouveaumontant1);
                     amende1.getInfractions().add(infraction);
@@ -148,21 +136,28 @@ public class InfractionController {
         }
 
 
-
         Categorie categorie2 = categorieRepository.findByCategorie(categorieamende2);
         Amende amende2 = new Amende();
+        //Montant 2
         Montant nouveaumontant2;
         if (((montant2) != null) || (devise2 != null)) {
             nouveaumontant2 = new Montant(devise2,Long.parseLong(montant2));
             if (montantRepository.findByMontant(Long.parseLong(montant2)) == null) {
-                nouveaumontant2 = montantRepository.save(nouveaumontant2);
+                montantRepository.save(nouveaumontant2);
+                nouveaumontant2 = montantRepository.findByMontant(Long.parseLong(montant2));
+                //Amende 2
                 amende2.setMontant(nouveaumontant2);
                 amende2.setCategorie(categorie2);
                 amende2.getInfractions().add(infraction);
                 amendeRepository.save(amende2);
             } else {
                 nouveaumontant2 = montantRepository.findByMontant(Long.parseLong(montant2));
-                if (amendeRepository.findByMontant(nouveaumontant2) != null) amende2 = amendeRepository.findByMontant(nouveaumontant2);
+                //Amende 1
+                if (amendeRepository.findByMontant(nouveaumontant2) != null) {
+                    amende2 = amendeRepository.findByMontant(nouveaumontant2);
+                    amende2.getInfractions().add(infraction);
+                    amendeRepository.save(amende2);
+                }
                 else {
                     amende2.setMontant(nouveaumontant2);
                     amende2.setCategorie(categorie2);
@@ -172,8 +167,6 @@ public class InfractionController {
             }
 
         }
-
-
 
         if (file != null) {
             //Vocal
@@ -211,16 +204,13 @@ public class InfractionController {
     public Optional<Infraction> updateInfraction(
             @Param("description") String description,
             @Param("reference") String reference,
-            @Param("amende1") Long amende1,
-            @Param("amende2") Long amende2,
             @Param("file")MultipartFile file,
             @Param("langue") String langue,
             @PathVariable long id) throws IOException {
         Infraction infraction = infractionRepository.findById(id).get();
         if (description !=null) infraction.setDescription(description);
         if (reference !=null) infraction.setReference(reference);
-        if (amende1 != null) infraction.getAmendes().add(amendeRepository.findByMontant(montantRepository.findByMontant(amende1)));
-        if (amende2 != null) infraction.getAmendes().add(amendeRepository.findByMontant(montantRepository.findByMontant(amende2)));
+
         if (file != null) {
             //Vocal
             String uploadDir = Audio.SOURCE_DIR+"aud";//System.getProperty("user.dir") + "/assets/aud";
@@ -242,6 +232,16 @@ public class InfractionController {
     @DeleteMapping("/delete/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
     public String deleteInfraction(@PathVariable long id) {
+
+        Infraction infraction = infractionRepository.findById(id).get();
+
+        List<Amende> amendesassociees = amendeRepository.findByInfractions(infraction);
+        for (Amende amende :
+                amendesassociees) {
+            amende.getInfractions().remove(infraction);
+            amendeRepository.save(amende);
+        }
+
         infractionService.delete(id);
         return "Infraction supprimée avec succès !";
     }

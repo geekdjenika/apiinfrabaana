@@ -27,7 +27,7 @@ public class Conseil {
     @OneToMany(mappedBy = "conseil", cascade = CascadeType.REMOVE)
     private List<Vocal> vocals = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany
     Collection<Infraction> infractions = new ArrayList<>();
 
 }

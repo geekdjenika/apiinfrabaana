@@ -21,16 +21,12 @@ public class Infraction {
     @Column(name = "id", nullable = false)
     private long id;
 
-    @Column(length = 1000)
+    @Column(length = 1000, unique = true)
     private String description;
 
     private String reference;
 
     @OneToMany(mappedBy = "infraction", cascade = CascadeType.REMOVE)
     private List<Vocal> vocals = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "infractions", cascade = CascadeType.REMOVE)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<Amende> amendes = new ArrayList<>();
 
 }

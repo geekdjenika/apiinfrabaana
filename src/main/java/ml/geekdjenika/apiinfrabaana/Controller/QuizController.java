@@ -206,4 +206,10 @@ public class QuizController {
         return sessionJeuService.getAll();
     }
 
+    @GetMapping("/score/get/{utilisateur}")
+    @PostAuthorize("hasAuthority('USER')")
+    public SessionJeu getSessionJeuByUser(@PathVariable Utilisateur utilisateur) {
+        return sessionJeuService.getTop(utilisateur);
+    }
+
 }

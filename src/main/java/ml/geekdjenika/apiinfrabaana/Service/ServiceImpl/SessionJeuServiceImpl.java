@@ -2,6 +2,7 @@ package ml.geekdjenika.apiinfrabaana.Service.ServiceImpl;
 
 import ml.geekdjenika.apiinfrabaana.Model.Quiz;
 import ml.geekdjenika.apiinfrabaana.Model.SessionJeu;
+import ml.geekdjenika.apiinfrabaana.Model.Utilisateur;
 import ml.geekdjenika.apiinfrabaana.Repository.SessionJeuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,14 @@ public class SessionJeuServiceImpl implements SessionJeuService{
     @Override
     public List<SessionJeu> getAll() {
         return sessionJeuRepository.findAll();
+    }
+
+    @Override
+    public SessionJeu getTop(Utilisateur utilisateur) {
+        for (int i = sessionJeuRepository.findByUtilisateur(utilisateur).toArray().length - 1; i >= 0; i--) {
+            return sessionJeuRepository.findByUtilisateur(utilisateur).get(i);
+        }
+        return null;
     }
 
     @Override

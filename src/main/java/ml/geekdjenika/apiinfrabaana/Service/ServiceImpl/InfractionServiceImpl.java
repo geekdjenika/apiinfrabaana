@@ -44,7 +44,6 @@ public class InfractionServiceImpl implements InfractionService{
                 infractionamodifier -> {
                     infractionamodifier.setDescription(infraction.getDescription());
                     infractionamodifier.setReference(infraction.getReference());
-                    infractionamodifier.setAmendes(infraction.getAmendes());
                     infractionamodifier.setVocals(infraction.getVocals());
                     //infractionamodifier.setUtilisateur(infraction.getUtilisateur());
                     return infractionRepository.save(infractionamodifier);
