@@ -13,8 +13,11 @@ import java.util.List;
 public interface AmendeRepository extends JpaRepository<Amende, Long> {
     Amende findByCategorie(Categorie categorie);
 
-    Amende findByMontant(Montant montant);
+    //Amende findByMontant(Montant montant);
+    Amende findByCategorieAndMontant(Categorie categorie,Montant montant);
 
     List<Amende> findByInfractions(Infraction infraction);
+
+    boolean existsByCategorieAndMontant(Categorie categorie, Montant montant);
 
 }

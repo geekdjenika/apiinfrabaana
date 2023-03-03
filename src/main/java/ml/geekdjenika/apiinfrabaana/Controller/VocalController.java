@@ -58,7 +58,7 @@ public class VocalController {
         if (conseilRepository.findByConseil(sujet) != null) vocal.setConseil(conseilRepository.findByConseil(sujet));
         if (infractionRepository.findByDescription(sujet) != null) vocal.setInfraction(infractionRepository.findByDescription(sujet));
         if (sujet != null)
-        if (amendeRepository.findByMontant(montantRepository.findByMontant(Long.parseLong(sujet))) != null) vocal.setAmende(amendeRepository.findByMontant(montantRepository.findByMontant(Long.parseLong(sujet))));
+        //if (amendeRepository.findByMontant(montantRepository.findByMontant(Long.parseLong(sujet))) != null) vocal.setAmende(amendeRepository.findByMontant(montantRepository.findByMontant(Long.parseLong(sujet))));
         vocal.setVocal(file.getOriginalFilename());
         vocal = vocalService.addVocal(vocal);
         return vocal;

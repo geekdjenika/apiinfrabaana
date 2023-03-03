@@ -96,7 +96,6 @@ public class InfractionController {
     ) throws IOException {
 
         Infraction infraction = new Infraction();
-        //infraction.setUtilisateur(utilisateurRepository.findById(id).get());
         infraction.setDescription(description);
         infraction.setReference(reference);
 
@@ -120,8 +119,8 @@ public class InfractionController {
             } else {
                 nouveaumontant1 = montantRepository.findByMontant(Long.parseLong(montant1));
                 //Amende 1
-                if (amendeRepository.findByMontant(nouveaumontant1) != null) {
-                    amende1 = amendeRepository.findByMontant(nouveaumontant1);
+                if (amendeRepository.existsByCategorieAndMontant(categorie1,nouveaumontant1)) {
+                    amende1 = amendeRepository.findByCategorieAndMontant(categorie1,nouveaumontant1);
                     amende1.getInfractions().add(infraction);
                     amendeRepository.save(amende1);
                 }
@@ -152,9 +151,9 @@ public class InfractionController {
                 amendeRepository.save(amende2);
             } else {
                 nouveaumontant2 = montantRepository.findByMontant(Long.parseLong(montant2));
-                //Amende 1
-                if (amendeRepository.findByMontant(nouveaumontant2) != null) {
-                    amende2 = amendeRepository.findByMontant(nouveaumontant2);
+                //Amende 2
+                if (amendeRepository.existsByCategorieAndMontant(categorie2,nouveaumontant2)) {
+                    amende2 = amendeRepository.findByCategorieAndMontant(categorie2,nouveaumontant2);
                     amende2.getInfractions().add(infraction);
                     amendeRepository.save(amende2);
                 }
