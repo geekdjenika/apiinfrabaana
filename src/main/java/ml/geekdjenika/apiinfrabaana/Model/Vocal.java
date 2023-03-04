@@ -21,7 +21,7 @@ public class Vocal {
 
     private String vocal;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne
     private Langue langue;
 
     @ManyToOne

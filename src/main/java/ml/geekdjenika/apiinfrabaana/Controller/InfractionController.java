@@ -16,8 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/infraction")
@@ -195,7 +194,9 @@ public class InfractionController {
     @GetMapping("/get/all")
     @PostAuthorize("hasAuthority('USER')")
     public List<Infraction> getAllInfractions() {
-        return infractionService.getAll();
+        List<Infraction> listainversee = infractionService.getAll();
+        Collections.reverse(listainversee);
+        return listainversee;
     }
 
     @PutMapping("/update/{id}")

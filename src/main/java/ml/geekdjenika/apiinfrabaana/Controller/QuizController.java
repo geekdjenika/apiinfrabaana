@@ -36,7 +36,9 @@ public class QuizController {
     @GetMapping("/questions")
     @PostAuthorize("hasAuthority('USER')")
     public List<Question> getAllQuestion() {
-        return questionService.getAllQuestions();
+        List<Question> listarenversee = questionService.getAllQuestions();
+        Collections.reverse(listarenversee);
+        return listarenversee;
     }
 
     @GetMapping("/question/{qname}")
@@ -121,7 +123,9 @@ public class QuizController {
     @GetMapping("/get/all")
     @PostAuthorize("hasAuthority('USER')")
     public List<Quiz> getAllQuiz(){
-        return quizService.getAllQuiz();
+        List<Quiz> listarenversee = quizService.getAllQuiz();
+        Collections.reverse(listarenversee);
+        return listarenversee;
     }
 
     @PostMapping("/addqtoq/{id}")

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,9 @@ public class UtilisateurController {
     @GetMapping("/users")
     @PostAuthorize("hasAuthority('USER')")
     public List<Utilisateur> getAllUsers() {
-        return utilisateurService.getAllUsers();
+        List<Utilisateur> listarenversee = utilisateurService.getAllUsers();
+        Collections.reverse(listarenversee);
+        return listarenversee;
     }
 
     @DeleteMapping("/delete/{id}")
@@ -50,6 +53,7 @@ public class UtilisateurController {
         //String uploadDir = System.getProperty("java.io.tmpdir") + "assets/aud"; //Pour heroku
         Utilisateur utilisateur = new Utilisateur(username,email,imageName);
         Image.saveImage(uploadDir, imageName, photo);
+        Image.saveImage("C:\\Users\\djeni\\Documents\\infradashbord\\src\\assets\\img", imageName, photo);
         return utilisateurService.updateUser(utilisateur,id);
     }
 

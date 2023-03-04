@@ -132,15 +132,15 @@ public class AmendeController {
 
     @PutMapping("/update/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public Optional<Amende> updateFine(
+    public Amende updateFine(
             @Param("type") String type,
-            @Param("montant") long montant,
+            @Param("montant") String montant,
             @PathVariable long id,
             @Param("file")MultipartFile file,
             @Param("langue") String langue) throws IOException {
         Amende amende = amendeRepository.findById(id).get();
-        amende.setCategorie(categorieRepository.findByCategorie(type));;
-        if (montantRepository.findByMontant(montant) != null) amende.setMontant(montantRepository.findByMontant(montant));
+        if (categorieRepository.findByCategorie(type) != null) amende.setCategorie(categorieRepository.findByCategorie(type));;
+        if (montant != null) amende.setMontant(montantRepository.findByMontant(Long.parseLong(montant)));
         if (file != null) {
             //Vocal
             String uploadDir = Audio.SOURCE_DIR+"aud";//System.getProperty("user.dir") + "/assets/aud";
@@ -156,7 +156,7 @@ public class AmendeController {
             vocal.setVocal(file.getOriginalFilename());
             vocalService.addVocal(vocal);
         }
-        return amendeService.updateFine(amende,id);
+        return amendeService.updateFine(amende,id).get();
     }
 
     @DeleteMapping("/delete/{id}")

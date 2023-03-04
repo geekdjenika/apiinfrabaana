@@ -1,5 +1,6 @@
 package ml.geekdjenika.apiinfrabaana.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
@@ -24,5 +26,9 @@ public class Quiz {
 
     @ManyToMany
     private Collection<Question> questions = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
+    List<SessionJeu> sessionJeuList = new ArrayList<>();
 
 }
