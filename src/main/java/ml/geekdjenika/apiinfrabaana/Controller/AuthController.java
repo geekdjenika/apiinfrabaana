@@ -1,12 +1,12 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
 import lombok.ToString;
-import ml.geekdjenika.apiinfrabaana.Model.ERole;
+import ml.geekdjenika.apiinfrabaana.enums.ERole;
 import ml.geekdjenika.apiinfrabaana.Model.Role;
-import ml.geekdjenika.apiinfrabaana.Model.Utilisateur;
+import ml.geekdjenika.apiinfrabaana.Model.User;
 import ml.geekdjenika.apiinfrabaana.Repository.RoleRepository;
-import ml.geekdjenika.apiinfrabaana.Repository.UtilisateurRepository;
-import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.UserDetailsImpl;
+import ml.geekdjenika.apiinfrabaana.Repository.UserRepository;
+import ml.geekdjenika.apiinfrabaana.Service.userDetails.UserDetailsImpl;
 import ml.geekdjenika.apiinfrabaana.jwt.JwtUtils;
 import ml.geekdjenika.apiinfrabaana.payload.request.LoginRequest;
 import ml.geekdjenika.apiinfrabaana.payload.request.SignupRequest;
@@ -38,7 +38,7 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UtilisateurRepository utilisateurRepository;
+    UserRepository userRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -72,20 +72,20 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (utilisateurRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Erreur: Cet nom d'utilisateur existe déjà !"));
         }
 
-        if (utilisateurRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Erreur: Cet adresse email existe déjà !"));
         }
 
         // Create new user's account
-        Utilisateur utilisateur = new Utilisateur(signUpRequest.getUsername(),
+        User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()),signUpRequest.getImage());
 
@@ -112,8 +112,8 @@ public class AuthController {
             });
         }
 
-        utilisateur.setRoles(roles);
-        utilisateurRepository.save(utilisateur);
+        user.setRoles(roles);
+        userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("Utilisateur créé avec succès !"));
     }

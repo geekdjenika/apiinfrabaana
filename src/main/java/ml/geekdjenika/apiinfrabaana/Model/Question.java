@@ -25,10 +25,10 @@ public class Question {
     private String reponse;
 
     @OneToMany(mappedBy="question", cascade = CascadeType.REMOVE)
-    private List<Reponse> mauvaisesReponses=new ArrayList<>();
+    private List<Response> badResponses =new ArrayList<>();
 
     @ManyToOne
-    Utilisateur utilisateur;
+    User user;
 
     public Question(long id) {
         this.id = id;

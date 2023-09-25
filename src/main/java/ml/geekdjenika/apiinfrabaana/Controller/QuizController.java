@@ -2,10 +2,10 @@ package ml.geekdjenika.apiinfrabaana.Controller;
 
 import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Model.*;
-import ml.geekdjenika.apiinfrabaana.Repository.UtilisateurRepository;
-import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.QuestionService;
-import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.QuizService;
-import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.SessionJeuService;
+import ml.geekdjenika.apiinfrabaana.Repository.UserRepository;
+import ml.geekdjenika.apiinfrabaana.Service.question.QuestionService;
+import ml.geekdjenika.apiinfrabaana.Service.quiz.QuizService;
+import ml.geekdjenika.apiinfrabaana.Service.gameSession.GameSessionService;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,16 +21,16 @@ public class QuizController {
 
     private final QuestionService questionService;
     private final QuizService quizService;
-    private final UtilisateurRepository utilisateurRepository;
+    private final UserRepository userRepository;
 
-    private final SessionJeuService sessionJeuService;
+    private final GameSessionService gameSessionService;
 
     public QuizController(QuestionService questionService, QuizService quizService,
-                          UtilisateurRepository utilisateurRepository, SessionJeuService sessionJeuService) {
+                          UserRepository userRepository, GameSessionService gameSessionService) {
         this.questionService = questionService;
         this.quizService = quizService;
-        this.utilisateurRepository = utilisateurRepository;
-        this.sessionJeuService = sessionJeuService;
+        this.userRepository = userRepository;
+        this.gameSessionService = gameSessionService;
     }
 
     @GetMapping("/questions")
@@ -56,7 +56,7 @@ public class QuizController {
     @PostMapping("/question/add/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
     public Question addQuestion(@RequestBody Question question, @PathVariable long id) {
-        question.setUtilisateur(new Utilisateur(id));
+        question.setUser(new User(id));
         return questionService.addQuestion(question);
     }
 
@@ -73,11 +73,11 @@ public class QuizController {
 
         questionamodifier.setQuestion(question);
         questionamodifier.setReponse(reponse);
-        if (reponse1.isEmpty()||reponse2.isEmpty()||reponse3.isEmpty()) questionamodifier.setMauvaisesReponses(null);
+        if (reponse1.isEmpty()||reponse2.isEmpty()||reponse3.isEmpty()) questionamodifier.setBadResponses(null);
         else {
-            questionamodifier.getMauvaisesReponses().add(new Reponse(reponse1));
-            questionamodifier.getMauvaisesReponses().add(new Reponse(reponse2));
-            questionamodifier.getMauvaisesReponses().add(new Reponse(reponse3));
+            questionamodifier.getBadResponses().add(new Response(reponse1));
+            questionamodifier.getBadResponses().add(new Response(reponse2));
+            questionamodifier.getBadResponses().add(new Response(reponse3));
         }
 
 
@@ -98,12 +98,12 @@ public class QuizController {
             @Param("reponse1") String reponse1,
             @Param("reponse2") String reponse2,
             @Param("reponse3") String reponse3) {
-        List<Reponse> mauvaisesReponses = new ArrayList<>();
-        mauvaisesReponses.add(new Reponse(reponse1,new Question(id)));
-        mauvaisesReponses.add(new Reponse(reponse2,new Question(id)));
-        mauvaisesReponses.add(new Reponse(reponse3,new Question(id)));
+        List<Response> badResponses = new ArrayList<>();
+        badResponses.add(new Response(reponse1,new Question(id)));
+        badResponses.add(new Response(reponse2,new Question(id)));
+        badResponses.add(new Response(reponse3,new Question(id)));
 
-        questionService.addReponses(id,mauvaisesReponses);
+        questionService.addResponses(id, badResponses);
         return "Réponses ajoutées avec succès !";
 
     }
@@ -194,26 +194,26 @@ public class QuizController {
     //#############SessionJeu#######################SessionJeu###################SessionJeu###########################SessionJeu######################
     @PostMapping("/score/add/{quiz}/{utilisateur}")
     @PostAuthorize("hasAuthority('USER')")
-    public SessionJeu addSessionJeu(@RequestBody SessionJeu sessionJeu,@PathVariable Quiz quiz,@PathVariable Utilisateur utilisateur) {
+    public GameSession addSessionJeu(@RequestBody GameSession gameSession, @PathVariable Quiz quiz, @PathVariable User user) {
         //Utilisateur utilisateur1 = utilisateurRepository.findById(utilisateur.getId()).get();
-        sessionJeu.setDate(new Date());
-        sessionJeu.setQuiz(quiz);
-        sessionJeu.setUtilisateur(utilisateur);
+        gameSession.setDate(new Date());
+        gameSession.setQuiz(quiz);
+        gameSession.setUser(user);
         //utilisateur1.getSessionJeux().add(sessionJeu);
         //utilisateurRepository.save(utilisateur1);
-        return sessionJeuService.add(sessionJeu);
+        return gameSessionService.add(gameSession);
     }
 
     @GetMapping("/score/get/all")
     @PostAuthorize("hasAuthority('USER')")
-    public List<SessionJeu> getAllSessionJeu() {
-        return sessionJeuService.getAll();
+    public List<GameSession> getAllSessionJeu() {
+        return gameSessionService.getAll();
     }
 
     @GetMapping("/score/get/{utilisateur}")
     @PostAuthorize("hasAuthority('USER')")
-    public SessionJeu getSessionJeuByUser(@PathVariable Utilisateur utilisateur) {
-        return sessionJeuService.getTop(utilisateur);
+    public GameSession getSessionJeuByUser(@PathVariable User user) {
+        return gameSessionService.getTop(user);
     }
 
 }

@@ -1,6 +1,6 @@
 package ml.geekdjenika.apiinfrabaana.Security;
 
-import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.UserDetailsServiceImpl;
+import ml.geekdjenika.apiinfrabaana.Service.userDetails.UserDetailsServiceImpl;
 import ml.geekdjenika.apiinfrabaana.jwt.AuthEntryPointJwt;
 import ml.geekdjenika.apiinfrabaana.jwt.AuthTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
