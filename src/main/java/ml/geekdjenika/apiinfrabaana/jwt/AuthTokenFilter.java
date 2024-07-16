@@ -2,7 +2,7 @@ package ml.geekdjenika.apiinfrabaana.jwt;
 
 
 import lombok.ToString;
-import ml.geekdjenika.apiinfrabaana.Service.ServiceImpl.UserDetailsServiceImpl;
+import ml.geekdjenika.apiinfrabaana.Service.userDetails.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -22,17 +22,17 @@ public class Vocal {
     private String vocal;
 
     @OneToOne
-    private Langue langue;
+    private Language language;
 
     @ManyToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Conseil conseil;
+    private Tip tip;
 
     @ManyToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Infraction infraction;
+    private Infringement infringement;
 
     @ManyToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Amende amende;
+    private Fine fine;
 }

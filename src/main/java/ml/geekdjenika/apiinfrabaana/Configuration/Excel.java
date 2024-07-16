@@ -1,6 +1,6 @@
 package ml.geekdjenika.apiinfrabaana.Configuration;
 
-import ml.geekdjenika.apiinfrabaana.Model.ExcelDto;
+import ml.geekdjenika.apiinfrabaana.dto.ExcelDto;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;

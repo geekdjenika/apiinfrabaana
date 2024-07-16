@@ -1,7 +1,7 @@
 
 package ml.geekdjenika.apiinfrabaana.Repository;
 
-import ml.geekdjenika.apiinfrabaana.Model.ERole;
+import ml.geekdjenika.apiinfrabaana.enums.ERole;
 import ml.geekdjenika.apiinfrabaana.Model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

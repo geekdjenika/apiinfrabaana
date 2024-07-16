@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import ml.geekdjenika.apiinfrabaana.enums.ERole;
 
 import javax.persistence.*;
 

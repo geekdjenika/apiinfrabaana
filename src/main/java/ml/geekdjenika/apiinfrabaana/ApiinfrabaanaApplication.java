@@ -2,12 +2,12 @@ package ml.geekdjenika.apiinfrabaana;
 
 import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.Controller.AuthController;
-import ml.geekdjenika.apiinfrabaana.Model.Categorie;
-import ml.geekdjenika.apiinfrabaana.Model.ERole;
-import ml.geekdjenika.apiinfrabaana.Model.Langue;
+import ml.geekdjenika.apiinfrabaana.Model.Category;
+import ml.geekdjenika.apiinfrabaana.enums.ERole;
+import ml.geekdjenika.apiinfrabaana.Model.Language;
 import ml.geekdjenika.apiinfrabaana.Model.Role;
-import ml.geekdjenika.apiinfrabaana.Repository.CategorieRepository;
-import ml.geekdjenika.apiinfrabaana.Repository.LangueRepository;
+import ml.geekdjenika.apiinfrabaana.Repository.CategoryRepository;
+import ml.geekdjenika.apiinfrabaana.Repository.LanguageRepository;
 import ml.geekdjenika.apiinfrabaana.Repository.RoleRepository;
 import ml.geekdjenika.apiinfrabaana.payload.request.SignupRequest;
 import org.springframework.boot.CommandLineRunner;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.HashSet;
 import java.util.Set;
 
-import static ml.geekdjenika.apiinfrabaana.Model.ERole.ADMIN;
+import static ml.geekdjenika.apiinfrabaana.enums.ERole.ADMIN;
 
 @SpringBootApplication
 @ToString
@@ -32,7 +32,7 @@ public class ApiinfrabaanaApplication {
     }
 
     @Bean
-    CommandLineRunner start(RoleRepository roleRepository, AuthController authController, CategorieRepository categorieRepository, LangueRepository langueRepository) {
+    CommandLineRunner start(RoleRepository roleRepository, AuthController authController, CategoryRepository categoryRepository, LanguageRepository languageRepository) {
 
         return args -> {
 
@@ -48,17 +48,17 @@ public class ApiinfrabaanaApplication {
             defaultuser.setRole(roles);
             authController.registerUser(defaultuser);
 
-            if (categorieRepository.findAll().isEmpty()) {
-                categorieRepository.save(new Categorie("Gros porteurs"));
-                categorieRepository.save(new Categorie("Véhicules légers"));
-                categorieRepository.save(new Categorie("Motos"));
-                categorieRepository.save(new Categorie("Générales"));
+            if (categoryRepository.findAll().isEmpty()) {
+                categoryRepository.save(new Category("Gros porteurs"));
+                categoryRepository.save(new Category("Véhicules légers"));
+                categoryRepository.save(new Category("Motos"));
+                categoryRepository.save(new Category("Générales"));
             }
 
-            if (langueRepository.findAll().isEmpty()) {
-                langueRepository.save(new Langue("bm"));
-                langueRepository.save(new Langue("fr"));
-                langueRepository.save(new Langue("en"));
+            if (languageRepository.findAll().isEmpty()) {
+                languageRepository.save(new Language("bm"));
+                languageRepository.save(new Language("fr"));
+                languageRepository.save(new Language("en"));
             }
 
         };

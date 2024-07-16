@@ -1,9 +1,8 @@
 package ml.geekdjenika.apiinfrabaana.Controller;
 
 import lombok.ToString;
-import ml.geekdjenika.apiinfrabaana.Model.Langue;
-import ml.geekdjenika.apiinfrabaana.Model.Montant;
-import ml.geekdjenika.apiinfrabaana.Repository.LangueRepository;
+import ml.geekdjenika.apiinfrabaana.Model.Language;
+import ml.geekdjenika.apiinfrabaana.Repository.LanguageRepository;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,16 +16,16 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @ToString
 public class NewController {
-    private final LangueRepository langueRepository;
+    private final LanguageRepository languageRepository;
 
-    public NewController(LangueRepository langueRepository) {
-        this.langueRepository = langueRepository;
+    public NewController(LanguageRepository languageRepository) {
+        this.languageRepository = languageRepository;
     }
 
     @GetMapping("/langue/get/all")
     @PostAuthorize("hasAuthority('USER')")
-    public List<Langue> getAll() {
-        return langueRepository.findAll();
+    public List<Language> getAll() {
+        return languageRepository.findAll();
     }
 
 

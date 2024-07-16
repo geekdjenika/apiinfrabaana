@@ -29,6 +29,6 @@ public class Quiz {
 
     @JsonIgnore
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
-    List<SessionJeu> sessionJeuList = new ArrayList<>();
+    List<GameSession> gameSessionList = new ArrayList<>();
 
 }
