@@ -1,15 +1,15 @@
 package ml.geekdjenika.apiinfrabaana;
 
 import lombok.ToString;
-import ml.geekdjenika.apiinfrabaana.Controller.AuthController;
-import ml.geekdjenika.apiinfrabaana.Model.Category;
+import ml.geekdjenika.apiinfrabaana.controllers.AuthController;
+import ml.geekdjenika.apiinfrabaana.models.Category;
 import ml.geekdjenika.apiinfrabaana.enums.ERole;
-import ml.geekdjenika.apiinfrabaana.Model.Language;
-import ml.geekdjenika.apiinfrabaana.Model.Role;
-import ml.geekdjenika.apiinfrabaana.Repository.CategoryRepository;
-import ml.geekdjenika.apiinfrabaana.Repository.LanguageRepository;
-import ml.geekdjenika.apiinfrabaana.Repository.RoleRepository;
-import ml.geekdjenika.apiinfrabaana.payload.request.SignupRequest;
+import ml.geekdjenika.apiinfrabaana.models.Language;
+import ml.geekdjenika.apiinfrabaana.models.Role;
+import ml.geekdjenika.apiinfrabaana.repositories.CategoryRepository;
+import ml.geekdjenika.apiinfrabaana.repositories.LanguageRepository;
+import ml.geekdjenika.apiinfrabaana.repositories.RoleRepository;
+import ml.geekdjenika.apiinfrabaana.dto.payloads.request.SignupRequest;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
