@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -28,7 +29,7 @@ public class GameSession {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Quiz quiz;
 
-    private Date date;
+    private LocalDateTime date;
 
     private long record;
 
