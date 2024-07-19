@@ -28,6 +28,6 @@ public class Tip {
     private List<Vocal> vocals = new ArrayList<>();
 
     @ManyToMany
-    Collection<Infringement> infringements = new ArrayList<>();
+    private List<Infringement> infringements = new ArrayList<>();
 
 }

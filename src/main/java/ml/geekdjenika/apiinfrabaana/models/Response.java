@@ -16,11 +16,11 @@ public class Response {
     @Column(name = "id", nullable = false)
     private long id;
 
-    String response;
+    private String response;
 
     @JsonIgnore
     @ManyToOne
-    Question question;
+    private Question question;
 
     public Response(String response, Question question) {
         this.response = response;

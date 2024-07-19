@@ -25,10 +25,10 @@ public class Quiz {
     private String label;
 
     @ManyToMany
-    private Collection<Question> questions = new ArrayList<>();
+    private List<Question> questions = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
-    List<GameSession> gameSessionList = new ArrayList<>();
+    private List<GameSession> gameSessions = new ArrayList<>();
 
 }

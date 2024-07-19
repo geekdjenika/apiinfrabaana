@@ -1,13 +1,9 @@
 package ml.geekdjenika.apiinfrabaana.dto.question;
 
 import lombok.*;
-import ml.geekdjenika.apiinfrabaana.models.Response;
-import ml.geekdjenika.apiinfrabaana.models.User;
+import ml.geekdjenika.apiinfrabaana.dto.response.ResponseResponse;
+import ml.geekdjenika.apiinfrabaana.dto.user.UserResponse;
 
-import javax.persistence.CascadeType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder

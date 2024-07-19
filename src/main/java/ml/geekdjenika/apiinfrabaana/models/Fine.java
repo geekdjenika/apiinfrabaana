@@ -23,7 +23,7 @@ public class Fine {
 
     @ManyToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    Category category;
+    private Category category;
 
     @ManyToOne
     private Amount amount;

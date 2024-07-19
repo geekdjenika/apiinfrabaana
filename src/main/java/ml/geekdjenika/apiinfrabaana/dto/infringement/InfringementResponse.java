@@ -1,12 +1,7 @@
 package ml.geekdjenika.apiinfrabaana.dto.infringement;
 
 import lombok.*;
-import ml.geekdjenika.apiinfrabaana.models.Vocal;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
-import java.util.ArrayList;
+import ml.geekdjenika.apiinfrabaana.dto.vocal.VocalResponse;
 import java.util.List;
 
 @Builder

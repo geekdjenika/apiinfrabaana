@@ -1,10 +1,9 @@
-package ml.geekdjenika.apiinfrabaana.dto.fine;
+package ml.geekdjenika.apiinfrabaana.dto.tip;
 
 import lombok.*;
-import ml.geekdjenika.apiinfrabaana.dto.amount.AmountResponse;
-import ml.geekdjenika.apiinfrabaana.dto.category.CategoryResponse;
 import ml.geekdjenika.apiinfrabaana.dto.infringement.InfringementResponse;
 import ml.geekdjenika.apiinfrabaana.dto.vocal.VocalResponse;
+
 import java.util.List;
 
 @Builder
@@ -12,10 +11,9 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FineResponse {
+public class TipResponse {
     private long id;
-    private CategoryResponse category;
-    private AmountResponse amount;
+    private String tip;
     private List<VocalResponse> vocals;
     private List<InfringementResponse> infringements;
 }

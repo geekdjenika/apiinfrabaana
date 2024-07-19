@@ -1,11 +1,8 @@
 package ml.geekdjenika.apiinfrabaana.dto.gameSession;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import ml.geekdjenika.apiinfrabaana.models.Quiz;
-import ml.geekdjenika.apiinfrabaana.models.User;
-
-import javax.persistence.ManyToOne;
+import ml.geekdjenika.apiinfrabaana.dto.quiz.QuizResponse;
+import ml.geekdjenika.apiinfrabaana.dto.user.UserResponse;
 import java.time.LocalDateTime;
 
 @Builder
