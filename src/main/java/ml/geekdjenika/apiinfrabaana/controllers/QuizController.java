@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -196,7 +198,7 @@ public class QuizController {
     @PostAuthorize("hasAuthority('USER')")
     public GameSession addSessionJeu(@RequestBody GameSession gameSession, @PathVariable Quiz quiz, @PathVariable User user) {
         //Utilisateur utilisateur1 = utilisateurRepository.findById(utilisateur.getId()).get();
-        gameSession.setDate(new Date());
+        gameSession.setDate(LocalDateTime.now());
         gameSession.setQuiz(quiz);
         gameSession.setUser(user);
         //utilisateur1.getSessionJeux().add(sessionJeu);

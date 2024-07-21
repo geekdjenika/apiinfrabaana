@@ -1,50 +1,69 @@
 package ml.geekdjenika.apiinfrabaana.services.amount;
 
+import ml.geekdjenika.apiinfrabaana.dto.amount.AmountResponse;
+import ml.geekdjenika.apiinfrabaana.exceptions.NotFoundException;
 import ml.geekdjenika.apiinfrabaana.models.Amount;
 import ml.geekdjenika.apiinfrabaana.repositories.AmountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 public class AmountServiceImpl implements AmountService {
 
     @Autowired
-    AmountRepository amountRepository;
+    AmountRepository repository;
 
     @Override
-    public Amount addAmount(Amount amount) {
-        return amountRepository.save(amount);
+    public AmountResponse save(Amount amount) {
+        return mapToResponse(repository.save(amount));
     }
 
     @Override
-    public Amount getAmount(long id) {
-        return amountRepository.findById(id).get();
+    public AmountResponse findById(long id) {
+        Amount amount = repository.findById(id).orElse(null);
+        if (amount == null) throw new NotFoundException("Ce montant est introuvable !");
+        return mapToResponse(amount);
     }
 
     @Override
-    public List<Amount> getAllAmount() {
-        return amountRepository.findAll();
+    public List<AmountResponse> findAll() {
+        return mapToResponse(repository.findAll());
     }
 
     @Override
-    public Optional<Amount> updateAmount(Amount amount, long id) {
-        return amountRepository.findById(id).map(
-                montant1 -> {
-                    montant1.setAmount(amount.getAmount());
-                    montant1.setCurrency(amount.getCurrency());
-                    return amountRepository.save(montant1);
-                }
-        );
+    public AmountResponse update(Amount amount) {
+        Amount amountToUpdate = repository.findById(amount.getId()).orElse(null);
+        if (amountToUpdate == null) throw new NotFoundException("Montant introuvable !");
+        amountToUpdate.setAmount(amount.getAmount());
+        amountToUpdate.setCurrency(amount.getCurrency());
+        return mapToResponse(amountToUpdate);
     }
 
     @Override
-    public void deleteMontant(long id) {
-        amountRepository.deleteById(id);
+    public void delete(long id) {
+        Amount amountToDelete = repository.findById(id).orElse(null);
+        if (amountToDelete == null) throw new NotFoundException("Montant introuvable !");
+        repository.delete(amountToDelete);
+    }
 
+    @Override
+    public AmountResponse mapToResponse(Amount amount) {
+        return AmountResponse.builder()
+                .id(amount.getId())
+                .amount(amount.getAmount())
+                .currency(amount.getCurrency())
+                .build();
+    }
+
+    @Override
+    public List<AmountResponse> mapToResponse(List<Amount> amounts) {
+        List<AmountResponse> amountResponses = new ArrayList<>();
+        amounts.forEach(amount -> amountResponses.add(mapToResponse(amount)));
+        return amountResponses;
     }
 }
