@@ -1,20 +1,19 @@
 package ml.geekdjenika.apiinfrabaana.services.quiz;
 
+import ml.geekdjenika.apiinfrabaana.dto.quiz.QuizResponse;
 import ml.geekdjenika.apiinfrabaana.models.Question;
 import ml.geekdjenika.apiinfrabaana.models.Quiz;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface QuizService {
-    Quiz addQuiz(Quiz quiz);
-    Quiz getQuiz(long id);
-    List<Quiz> getAllQuiz();
-    void addQuestionToQuiz(Question question, long id);
-    void addQuestionToQuiz(String question, long id);
-    void addQuestionsToQuiz(List<String> questions, long id);
-    Optional<Quiz> updateQuiz(Quiz quiz, long id);
-    void deleteQuiz(long id);
-    void removeQuestionToQuiz(String question, long id);
-
+    QuizResponse save(Quiz quiz);
+    QuizResponse findById(long id);
+    List<QuizResponse> findAll();
+    void addQuestion(long id, Question question);
+    QuizResponse update(Quiz quiz);
+    void delete(long id);
+    void removeQuestion(long id, Question question);
+    QuizResponse mapToResponse(Quiz quiz);
+    List<QuizResponse> mapToResponse(List<Quiz> quizList);
 }

@@ -1,20 +1,19 @@
 package ml.geekdjenika.apiinfrabaana.services.infringement;
 
+import ml.geekdjenika.apiinfrabaana.dto.infringement.InfringementResponse;
 import ml.geekdjenika.apiinfrabaana.models.Infringement;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface InfringementService {
 
-    Infringement addInfringement(Infringement infringement);
-    Infringement getInfringement(long id);
-    List<Infringement> getAll();
-    List<Infringement> getAllByCategory(String categorie);
-    Optional<Infringement> update(Infringement infringement, long id);
+    InfringementResponse save(Infringement infringement);
+    InfringementResponse update(Infringement infringement);
+    InfringementResponse findById(long id);
+    List<InfringementResponse> findAll();
+    List<InfringementResponse> findByCategoryName(String name);
     void delete(long id);
+    InfringementResponse mapToResponse(Infringement infringement);
+    List<InfringementResponse> mapToResponse(List<Infringement> infringements);
 
-    Infringement superAdd(Infringement infringement);
-
-    Infringement findById(long id);
 }

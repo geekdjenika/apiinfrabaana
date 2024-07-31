@@ -1,16 +1,16 @@
 package ml.geekdjenika.apiinfrabaana.services.fine;
 
+import ml.geekdjenika.apiinfrabaana.dto.fine.FineResponse;
 import ml.geekdjenika.apiinfrabaana.models.Fine;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface FineService {
-
-    Fine addFine(Fine fine);
-    Fine getFine(long id);
-    List<Fine> getAllFine();
-    Optional<Fine> updateFine(Fine fine, long id);
-    void deleteFine(long id);
-
+    FineResponse save(Fine fine);
+    FineResponse update(Fine fine);
+    FineResponse findById(long id);
+    List<FineResponse> findAll();
+    void delete(long id);
+    FineResponse mapToResponse(Fine fine);
+    List<FineResponse> mapToResponse(List<Fine> fines);
 }

@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class QuestionResponse {
     private long id;
-    private String question;
+    private String name;
     private String response;
     private List<ResponseResponse> badResponses;
     private UserResponse user;

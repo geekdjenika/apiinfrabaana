@@ -13,4 +13,8 @@ public interface GameSessionRepository extends JpaRepository<GameSession, Long> 
     GameSession findByQuiz(Quiz quiz);
 
     List<GameSession> findByUser(User user);
+
+    List<GameSession> findByUserId(long userId);
+
+    List<GameSession> findByQuizId(long quizId);
 }

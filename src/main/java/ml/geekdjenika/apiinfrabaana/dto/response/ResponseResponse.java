@@ -10,6 +10,6 @@ import ml.geekdjenika.apiinfrabaana.dto.question.QuestionResponse;
 @NoArgsConstructor
 public class ResponseResponse {
     private long id;
-    private String response;
+    private String name;
     private QuestionResponse question;
 }

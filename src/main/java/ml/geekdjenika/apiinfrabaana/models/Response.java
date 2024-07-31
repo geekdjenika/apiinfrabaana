@@ -16,18 +16,9 @@ public class Response {
     @Column(name = "id", nullable = false)
     private long id;
 
-    private String response;
+    private String name;
 
     @JsonIgnore
     @ManyToOne
     private Question question;
-
-    public Response(String response, Question question) {
-        this.response = response;
-        this.question = question;
-    }
-
-    public Response(String response) {
-        this.response = response;
-    }
 }

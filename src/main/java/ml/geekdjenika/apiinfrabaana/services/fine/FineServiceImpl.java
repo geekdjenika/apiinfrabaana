@@ -1,54 +1,89 @@
 package ml.geekdjenika.apiinfrabaana.services.fine;
 
+import lombok.RequiredArgsConstructor;
+import ml.geekdjenika.apiinfrabaana.dto.amount.AmountResponse;
+import ml.geekdjenika.apiinfrabaana.dto.category.CategoryResponse;
+import ml.geekdjenika.apiinfrabaana.dto.fine.FineResponse;
+import ml.geekdjenika.apiinfrabaana.exceptions.NotFoundException;
 import ml.geekdjenika.apiinfrabaana.models.Fine;
 import ml.geekdjenika.apiinfrabaana.repositories.FineRepository;
-import ml.geekdjenika.apiinfrabaana.repositories.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import ml.geekdjenika.apiinfrabaana.services.infringement.InfringementService;
+import ml.geekdjenika.apiinfrabaana.services.vocal.VocalService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class FineServiceImpl implements FineService {
 
-    @Autowired
-    FineRepository fineRepository;
-
-    @Autowired
-    CategoryRepository categoryRepository;
+    private final FineRepository repository;
+    private final VocalService vocalService;
+    private final InfringementService infringementService;
 
     @Override
-    public Fine addFine(Fine fine) {
-        return fineRepository.save(fine);
+    public FineResponse save(Fine fine) {
+        return mapToResponse(repository.save(fine));
     }
 
     @Override
-    public Fine getFine(long id) {
-        return fineRepository.findById(id).get();
+    public FineResponse findById(long id) {
+        Fine fine = repository.findById(id).orElse(null);
+        if (fine == null) throw new NotFoundException("Infraction introuvable !");
+        return mapToResponse(fine);
     }
 
     @Override
-    public List<Fine> getAllFine() {
-        return fineRepository.findAll();
+    public List<FineResponse> findAll() {
+        return mapToResponse(repository.findAll());
     }
 
     @Override
-    public Optional<Fine> updateFine(Fine fine, long id) {
-        return fineRepository.findById(id).map(
-                amende1 -> {
-                    amende1.setCategory(fine.getCategory());
-                    amende1.setAmount(fine.getAmount());
-                    amende1.setVocals(fine.getVocals());
-                    return fineRepository.save(amende1);
-                }
-        );
+    public FineResponse update(Fine fine) {
+        Fine fineToUpdate = repository.findById(fine.getId()).orElse(null);
+        if (fineToUpdate == null) throw new NotFoundException("Infraction introuvable !");
+        fineToUpdate.setCategory(fine.getCategory());
+        fineToUpdate.setAmount(fine.getAmount());
+        fineToUpdate.setVocals(fine.getVocals());
+        return mapToResponse(fineToUpdate);
     }
 
     @Override
-    public void deleteFine(long id) {
-        fineRepository.deleteById(id);
+    public void delete(long id) {
+        Fine fineToDelete = repository.findById(id).orElse(null);
+        if (fineToDelete == null) throw new NotFoundException("Infraction introuvable !");
+        repository.delete(fineToDelete);
+    }
+
+    @Override
+    public FineResponse mapToResponse(Fine fine) {
+        return FineResponse.builder()
+                .id(fine.getId())
+                .amount(AmountResponse.builder()
+                        .id(fine.getAmount().getId())
+                        .amount(fine.getAmount().getAmount())
+                        .currency(fine.getAmount().getCurrency())
+                        .build())
+                .category(CategoryResponse.builder()
+                        .id(fine.getCategory().getId())
+                        .name(fine.getCategory().getName())
+                        .build())
+                .vocals(vocalService.mapToResponse(fine.getVocals()))
+                .infringements(infringementService.mapToResponse(fine.getInfringements()))
+                .build();
+    }
+
+    @Override
+    public List<FineResponse> mapToResponse(List<Fine> fines) {
+        List<FineResponse> fineResponses = new ArrayList<>();
+        if (fines != null) {
+            for (Fine fine : fines) {
+                fineResponses.add(mapToResponse(fine));
+            }
+        }
+        return fineResponses;
     }
 }

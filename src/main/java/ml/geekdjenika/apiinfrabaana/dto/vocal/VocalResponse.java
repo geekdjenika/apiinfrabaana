@@ -13,7 +13,7 @@ import ml.geekdjenika.apiinfrabaana.dto.tip.TipResponse;
 @NoArgsConstructor
 public class VocalResponse {
     private long id;
-    private String vocal;
+    private String name;
     private LanguageResponse language;
     private TipResponse tip;
     private InfringementResponse infringement;

@@ -20,12 +20,9 @@ public class Category {
     @Column(name = "id", nullable = false)
     private long id;
 
-    private String category;
+    private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
     private List<Fine> fines = new ArrayList<>();
 
-    public Category(String category) {
-        this.category = category;
-    }
 }

@@ -20,4 +20,6 @@ public class Notification {
 
     @Column(length = 2000)
     private String description;
+    @ManyToOne
+    private User user;
 }

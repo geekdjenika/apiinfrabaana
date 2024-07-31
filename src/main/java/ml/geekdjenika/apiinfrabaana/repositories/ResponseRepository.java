@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface ResponseRepository extends JpaRepository<Response,Long> {
-    Response findByResponse(String response);
+    Response findByName(String name);
 
-    List<Response> findByQuestion(Question question);
+    List<Response> findByQuestionId(long questionId);
 }

@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class TipResponse {
     private long id;
-    private String tip;
+    private String description;
     private List<VocalResponse> vocals;
     private List<InfringementResponse> infringements;
 }

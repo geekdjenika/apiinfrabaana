@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 public class CategoryResponse {
     private long id;
-    private String category;
+    private String name;
     private List<FineResponse> fines;
 }

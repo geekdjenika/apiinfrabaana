@@ -22,7 +22,7 @@ public class Tip {
     private long id;
 
     @Column(length = 1000)
-    private String tip;
+    private String description;
 
     @OneToMany(mappedBy = "tip", cascade = CascadeType.REMOVE)
     private List<Vocal> vocals = new ArrayList<>();

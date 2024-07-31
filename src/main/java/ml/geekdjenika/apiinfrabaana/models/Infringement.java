@@ -1,5 +1,6 @@
 package ml.geekdjenika.apiinfrabaana.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,9 @@ public class Infringement {
     private String description;
 
     private String reference;
+
+    @ManyToOne
+    private Category category;
 
     @OneToMany(mappedBy = "infringement", cascade = CascadeType.REMOVE)
     private List<Vocal> vocals = new ArrayList<>();

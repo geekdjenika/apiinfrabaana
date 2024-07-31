@@ -20,22 +20,13 @@ public class Question {
     @Column(name = "id", nullable = false)
     private long id;
 
-    private String question;
+    private String name;
 
-    private String reponse;
+    private String response;
 
     @OneToMany(mappedBy="question", cascade = CascadeType.REMOVE)
     private List<Response> badResponses =new ArrayList<>();
 
     @ManyToOne
-    User user;
-
-    public Question(long id) {
-        this.id = id;
-    }
-
-    public Question(String question, String reponse) {
-        this.question = question;
-        this.reponse = reponse;
-    }
+    private User user;
 }

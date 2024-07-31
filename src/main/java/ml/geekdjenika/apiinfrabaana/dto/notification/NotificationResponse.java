@@ -1,6 +1,7 @@
 package ml.geekdjenika.apiinfrabaana.dto.notification;
 
 import lombok.*;
+import ml.geekdjenika.apiinfrabaana.dto.user.UserResponse;
 
 @Builder
 @Getter
@@ -10,4 +11,5 @@ import lombok.*;
 public class NotificationResponse {
     private long id;
     private String description;
+    private UserResponse user;
 }

@@ -1,10 +1,10 @@
 package ml.geekdjenika.apiinfrabaana.services.amount;
 
+import lombok.RequiredArgsConstructor;
 import ml.geekdjenika.apiinfrabaana.dto.amount.AmountResponse;
 import ml.geekdjenika.apiinfrabaana.exceptions.NotFoundException;
 import ml.geekdjenika.apiinfrabaana.models.Amount;
 import ml.geekdjenika.apiinfrabaana.repositories.AmountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,10 +13,10 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class AmountServiceImpl implements AmountService {
 
-    @Autowired
-    AmountRepository repository;
+    private final AmountRepository repository;
 
     @Override
     public AmountResponse save(Amount amount) {
@@ -39,7 +39,7 @@ public class AmountServiceImpl implements AmountService {
     public AmountResponse update(Amount amount) {
         Amount amountToUpdate = repository.findById(amount.getId()).orElse(null);
         if (amountToUpdate == null) throw new NotFoundException("Montant introuvable !");
-        amountToUpdate.setAmount(amount.getAmount());
+        amountToUpdate.setValue(amount.getValue());
         amountToUpdate.setCurrency(amount.getCurrency());
         return mapToResponse(amountToUpdate);
     }
@@ -55,7 +55,7 @@ public class AmountServiceImpl implements AmountService {
     public AmountResponse mapToResponse(Amount amount) {
         return AmountResponse.builder()
                 .id(amount.getId())
-                .amount(amount.getAmount())
+                .value(amount.getValue())
                 .currency(amount.getCurrency())
                 .build();
     }

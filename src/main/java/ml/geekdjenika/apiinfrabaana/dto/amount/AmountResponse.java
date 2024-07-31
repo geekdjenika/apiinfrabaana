@@ -8,6 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 public class AmountResponse {
     private long id;
-    private long amount;
+    private long value;
     private String currency;
 }
