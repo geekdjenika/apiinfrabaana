@@ -9,7 +9,9 @@ public interface ResponseService {
     ResponseResponse save(Response response);
     ResponseResponse update(Response response);
     List<ResponseResponse> findByQuestionId(long questionId);
+    ResponseResponse findById(long id);
     List<ResponseResponse> findAll();
+    void delete(long id);
     ResponseResponse mapToResponse(Response response);
     List<ResponseResponse> mapToResponse(List<Response> responses);
 }

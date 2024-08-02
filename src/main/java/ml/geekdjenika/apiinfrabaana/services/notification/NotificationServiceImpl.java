@@ -22,6 +22,11 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository repository;
 
     @Override
+    public NotificationResponse save(Notification notification) {
+        return mapToResponse(notification);
+    }
+
+    @Override
     public NotificationResponse findById(long id) {
         Notification notification = repository.findById(id).orElse(null);
         if (notification == null) throw new NotFoundException("Aucune notification correspondante !");

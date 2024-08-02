@@ -1,7 +1,6 @@
 package ml.geekdjenika.apiinfrabaana.controllers;
 
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.dto.amount.AmountResponse;
 import ml.geekdjenika.apiinfrabaana.models.Amount;
 import ml.geekdjenika.apiinfrabaana.services.amount.AmountService;
@@ -14,7 +13,6 @@ import java.util.List;
 @RequestMapping("/amount")
 @CrossOrigin
 @RequiredArgsConstructor
-@ToString
 public class AmountController {
     private final AmountService service;
 

@@ -64,7 +64,7 @@ public class FineServiceImpl implements FineService {
                 .id(fine.getId())
                 .amount(AmountResponse.builder()
                         .id(fine.getAmount().getId())
-                        .amount(fine.getAmount().getAmount())
+                        .value(fine.getAmount().getValue())
                         .currency(fine.getAmount().getCurrency())
                         .build())
                 .category(CategoryResponse.builder()

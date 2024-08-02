@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AmountRepository extends JpaRepository<Amount, Long> {
-    Amount findByAmount(long amount);
+    Amount findByValue(long value);
     Amount findByCurrency(String currency);
 }

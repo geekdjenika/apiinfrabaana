@@ -28,6 +28,11 @@ public class CategoryServiceImpl implements CategoryService {
     private final VocalService vocalService;
 
     @Override
+    public CategoryResponse save(Category category) {
+        return mapToResponse(repository.save(category));
+    }
+
+    @Override
     public List<CategoryResponse> findAll() {
         return mapToResponse(repository.findAll());
     }
@@ -57,7 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
                     .id(fine.getId())
                     .amount(AmountResponse.builder()
                             .id(fine.getAmount().getId())
-                            .amount(fine.getAmount().getAmount())
+                            .value(fine.getAmount().getValue())
                             .currency(fine.getAmount().getCurrency())
                             .build())
                     .category(CategoryResponse.builder()

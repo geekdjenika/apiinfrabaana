@@ -15,8 +15,6 @@ public interface FineRepository extends JpaRepository<Fine, Long> {
 
     Fine findByCategoryAndAmount(Category category, Amount amount);
 
-    List<Fine> findByInfringements(Infringement infringement);
-
     boolean existsByCategoryAndAmount(Category category, Amount amount);
 
 }

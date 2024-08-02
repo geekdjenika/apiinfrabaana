@@ -41,8 +41,22 @@ public class ResponseServiceImpl implements ResponseService {
     }
 
     @Override
+    public ResponseResponse findById(long id) {
+        Response response = repository.findById(id).orElse(null);
+        if (response == null) throw new NotFoundException("Réponse introuvable !");
+        return mapToResponse(response);
+    }
+
+    @Override
     public List<ResponseResponse> findAll() {
         return mapToResponse(repository.findAll());
+    }
+
+    @Override
+    public void delete(long id) {
+        Response response = repository.findById(id).orElse(null);
+        if (response == null) throw new NotFoundException("Réponse introuvable !");
+        repository.delete(response);
     }
 
     @Override

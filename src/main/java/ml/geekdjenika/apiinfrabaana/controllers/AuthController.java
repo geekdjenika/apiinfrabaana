@@ -1,7 +1,9 @@
 package ml.geekdjenika.apiinfrabaana.controllers;
 
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.enums.ERole;
+import ml.geekdjenika.apiinfrabaana.exceptions.NotFoundException;
 import ml.geekdjenika.apiinfrabaana.models.Role;
 import ml.geekdjenika.apiinfrabaana.models.User;
 import ml.geekdjenika.apiinfrabaana.repositories.RoleRepository;
@@ -12,7 +14,6 @@ import ml.geekdjenika.apiinfrabaana.dto.payloads.request.LoginRequest;
 import ml.geekdjenika.apiinfrabaana.dto.payloads.request.SignupRequest;
 import ml.geekdjenika.apiinfrabaana.dto.payloads.response.JwtResponse;
 import ml.geekdjenika.apiinfrabaana.dto.payloads.response.MessageResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,28 +29,24 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin
 @RestController
 @ToString
-@RequestMapping("/api/auth")
+@RequestMapping("/user")
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    @Autowired
-    PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
-    @Autowired
-    JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
-    @PostMapping("/signin")
+    @PostMapping("/sign-in")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -70,7 +67,7 @@ public class AuthController {
                 roles));
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/sign-up")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
@@ -78,11 +75,8 @@ public class AuthController {
                     .body(new MessageResponse("Erreur: Cet nom d'utilisateur existe déjà !"));
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Erreur: Cet adresse email existe déjà !"));
-        }
+        if (userRepository.existsByEmail(signUpRequest.getEmail()))
+            throw new NotFoundException("Cet adresse email existe déjà !");
 
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
@@ -96,17 +90,17 @@ public class AuthController {
 
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERole.USER)
-                    .orElseThrow(() -> new RuntimeException("Erreur: Role non trouvé !"));
+                    .orElseThrow(() -> new NotFoundException("Role non trouvé !"));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 if ("admin".equals(role)) {
                     Role adminRole = roleRepository.findByName(ERole.ADMIN)
-                            .orElseThrow(() -> new RuntimeException("Erreur: Role non trouvé !"));
+                            .orElseThrow(() -> new NotFoundException("Role non trouvé !"));
                     roles.add(adminRole);
                 } else {
                     Role userRole = roleRepository.findByName(ERole.USER)
-                            .orElseThrow(() -> new RuntimeException("Erreur: Role non trouvé !"));
+                            .orElseThrow(() -> new NotFoundException("Role non trouvé !"));
                     roles.add(userRole);
                 }
             });

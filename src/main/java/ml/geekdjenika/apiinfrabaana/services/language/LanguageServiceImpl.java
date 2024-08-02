@@ -52,6 +52,13 @@ public class LanguageServiceImpl implements LanguageService {
     }
 
     @Override
+    public void delete(long id) {
+        Language language = repository.findById(id).orElse(null);
+        if (language == null) throw new NotFoundException("Langue introuvable !");
+        repository.delete(language);
+    }
+
+    @Override
     public LanguageResponse mapToResponse(Language language) {
         return LanguageResponse.builder()
                 .id(language.getId())

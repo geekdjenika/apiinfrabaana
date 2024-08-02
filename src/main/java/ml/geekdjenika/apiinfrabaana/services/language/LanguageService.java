@@ -11,6 +11,7 @@ public interface LanguageService {
     LanguageResponse findByLabel(String label);
     List<LanguageResponse> findAll();
     LanguageResponse findById(long id);
+    void delete(long id);
     LanguageResponse mapToResponse(Language language);
     List<LanguageResponse> mapToResponse(List<Language> languages);
 }
