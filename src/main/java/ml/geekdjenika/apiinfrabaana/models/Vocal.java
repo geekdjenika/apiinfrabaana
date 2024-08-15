@@ -19,7 +19,7 @@ public class Vocal {
     @Column(name = "id", nullable = false)
     private long id;
 
-    private String vocal;
+    private String name;
 
     @OneToOne
     private Language language;

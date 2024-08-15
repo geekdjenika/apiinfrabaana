@@ -19,12 +19,7 @@ public class Amount {
     private long id;
 
     @Column(unique = true)
-    private long amount;
+    private long value;
 
     private String currency;
-
-    public Amount(String currency, long amount) {
-        this.currency = currency;
-        this.amount = amount;
-    }
 }

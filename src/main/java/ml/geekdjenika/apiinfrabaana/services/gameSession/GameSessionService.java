@@ -1,16 +1,16 @@
 package ml.geekdjenika.apiinfrabaana.services.gameSession;
 
-import ml.geekdjenika.apiinfrabaana.models.Quiz;
+import ml.geekdjenika.apiinfrabaana.dto.gameSession.GameSessionResponse;
 import ml.geekdjenika.apiinfrabaana.models.GameSession;
-import ml.geekdjenika.apiinfrabaana.models.User;
 
 import java.util.List;
 
 public interface GameSessionService {
-    GameSession add(GameSession gameSession);
-    List<GameSession> getAll();
-
-    GameSession getTop(User user);
-    GameSession getOne(long id);
-    GameSession findByQuiz(Quiz quiz);
+    GameSessionResponse save(GameSession gameSession);
+    List<GameSessionResponse> findAll();
+    List<GameSessionResponse> findByUserId(long userId);
+    GameSessionResponse findById(long id);
+    List<GameSessionResponse> findByQuizId(long quizId);
+    GameSessionResponse mapToResponse(GameSession gameSession);
+    List<GameSessionResponse> mapToResponse(List<GameSession> gameSessions);
 }

@@ -1,88 +1,98 @@
 package ml.geekdjenika.apiinfrabaana.services.question;
 
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import ml.geekdjenika.apiinfrabaana.dto.question.QuestionResponse;
+import ml.geekdjenika.apiinfrabaana.dto.user.UserResponse;
+import ml.geekdjenika.apiinfrabaana.exceptions.NotFoundException;
 import ml.geekdjenika.apiinfrabaana.models.Question;
-import ml.geekdjenika.apiinfrabaana.models.Response;
+import ml.geekdjenika.apiinfrabaana.models.User;
 import ml.geekdjenika.apiinfrabaana.repositories.QuestionRepository;
 import ml.geekdjenika.apiinfrabaana.repositories.ResponseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import ml.geekdjenika.apiinfrabaana.services.response.ResponseService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @ToString
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService{
 
-    @Autowired
-    QuestionRepository questionRepository;
-
-    @Autowired
-    ResponseRepository responseRepository;
+    private final QuestionRepository repository;
+    private final ResponseRepository responseRepository;
+    private final ResponseService responseService;
 
     @Override
-    public List<Question> getAllQuestions() {
-        return questionRepository.findAll();
+    public List<QuestionResponse> findAll() {
+        return mapToResponse(repository.findAll());
     }
 
     @Override
-    public Question getQuestion(String question) {
-        return questionRepository.findByQuestion(question);
+    public QuestionResponse findByName(String name) {
+        return mapToResponse(repository.findByName(name));
     }
 
     @Override
-    public Optional<Question> getQuestion(long id) {
-        return questionRepository.findById(id);
+    public QuestionResponse findById(long id) {
+        Question question = repository.findById(id).orElse(null);
+        if (question == null) throw new NotFoundException("Question introuvable !");
+        return mapToResponse(question);
     }
 
     @Override
-    public Question addQuestion(Question question) {
-        return questionRepository.save(question);
+    public QuestionResponse save(Question question) {
+        Question questionToSave = repository.findByName(question.getName());
+        if (questionToSave != null) throw new NotFoundException("Cette question existe déjà !");
+        return mapToResponse(repository.save(question));
     }
 
     @Override
-    public Optional<Question> updateQuestion(Question question, long id) {
-        List<Response> badResponses = question.getBadResponses();
-        List<Response> reponsesexistantes = responseRepository.findByQuestion(questionRepository.findById(id).get());
-        return questionRepository.findById(id).map(
-                question1 -> {
-                    if (!question.getQuestion().isEmpty()) question1.setQuestion(question.getQuestion());
-                    if (!question.getReponse().isEmpty()) question1.setReponse(question.getReponse());
-                    if (!(badResponses == null)) {
-                        responseRepository.deleteAll(reponsesexistantes);
-                        for (Response response :
-                                badResponses) {
-                            response.setQuestion(new Question(id));
-                            responseRepository.save(response);
-                            question1.getBadResponses().add(response);
-                        }
-
-                    }
-
-                    return questionRepository.save(question1);
-                }
-        );
-    }
-
-    @Override
-    public void deleteQuestion(long id) {
-        Question questionasupprimer = questionRepository.findById(id).orElse(null);
-        if (questionasupprimer != null) questionRepository.deleteById(id);
-        else throw new RuntimeException("Question inexistante !");
-    }
-
-    @Override
-    public void addResponses(long id, List<Response> responses) {
-        Question question = questionRepository.findById(id).orElseThrow();
-        for (Response response :
-                responses) {
-            responseRepository.save(response);
-            question.getBadResponses().add(response);
+    public QuestionResponse update(Question question) {
+        Question questionToUpdate = repository.findById(question.getId()).orElse(null);
+        if (questionToUpdate == null) throw new NotFoundException("Question introuvable !");
+        questionToUpdate.setName(question.getName());
+        questionToUpdate.setResponse(question.getResponse());
+        questionToUpdate.setUser(question.getUser());
+        if (question.getBadResponses() != null) {
+            questionToUpdate.getBadResponses().clear();
+            question.getBadResponses().forEach(badResponse -> questionToUpdate.getBadResponses().add(badResponse));
         }
-        //question.setMauvaisesReponses(reponses);
-        questionRepository.save(question);
+        return mapToResponse(questionToUpdate);
+    }
+
+    @Override
+    public void delete(long id) {
+        Question question = repository.findById(id).orElse(null);
+        if (question == null) throw new NotFoundException("Question introuvable !");
+        repository.delete(question);
+    }
+
+    @Override
+    public QuestionResponse mapToResponse(Question question) {
+        User user = question.getUser();
+        return QuestionResponse.builder()
+                .id(question.getId())
+                .name(question.getName())
+                .response(question.getResponse())
+                .user(UserResponse.builder()
+                        .id(user.getId())
+                        .username(user.getUsername())
+                        .email(user.getEmail())
+                        .build())
+                .badResponses(responseService.mapToResponse(question.getBadResponses()))
+                .build();
+    }
+
+    @Override
+    public List<QuestionResponse> mapToResponse(List<Question> questions) {
+        questions.sort(Comparator.comparing(Question::getId).reversed());
+        List<QuestionResponse> questionResponses = new ArrayList<>();
+        questions.forEach(question -> questionResponses.add(mapToResponse(question)));
+        return questionResponses;
     }
 }

@@ -1,14 +1,16 @@
 package ml.geekdjenika.apiinfrabaana.services.amount;
 
+import ml.geekdjenika.apiinfrabaana.dto.amount.AmountResponse;
 import ml.geekdjenika.apiinfrabaana.models.Amount;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface AmountService {
-    Amount addAmount(Amount amount);
-    Amount getAmount(long id);
-    List<Amount> getAllAmount();
-    Optional<Amount> updateAmount(Amount amount, long id);
-    void deleteMontant(long id);
+    AmountResponse save(Amount amount);
+    AmountResponse findById(long id);
+    List<AmountResponse> findAll();
+    AmountResponse update(Amount amount);
+    void delete(long id);
+    AmountResponse mapToResponse(Amount amount);
+    List<AmountResponse> mapToResponse(List<Amount> amounts);
 }

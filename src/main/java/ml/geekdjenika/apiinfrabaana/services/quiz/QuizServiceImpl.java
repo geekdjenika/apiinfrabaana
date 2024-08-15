@@ -1,91 +1,102 @@
 package ml.geekdjenika.apiinfrabaana.services.quiz;
 
+import lombok.RequiredArgsConstructor;
+import ml.geekdjenika.apiinfrabaana.dto.question.QuestionResponse;
+import ml.geekdjenika.apiinfrabaana.dto.quiz.QuizResponse;
+import ml.geekdjenika.apiinfrabaana.exceptions.NotFoundException;
 import ml.geekdjenika.apiinfrabaana.models.Question;
 import ml.geekdjenika.apiinfrabaana.models.Quiz;
 import ml.geekdjenika.apiinfrabaana.repositories.QuestionRepository;
 import ml.geekdjenika.apiinfrabaana.repositories.QuizRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import ml.geekdjenika.apiinfrabaana.services.gameSession.GameSessionService;
+import ml.geekdjenika.apiinfrabaana.services.question.QuestionService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class QuizServiceImpl implements QuizService{
 
-    @Autowired
-    QuestionRepository questionRepository;
-
-    @Autowired
-    QuizRepository quizRepository;
+    private final QuizRepository repository;
+    private final QuestionRepository questionRepository;
+    private final QuestionService questionService;
+    private final GameSessionService gameSessionService;
 
     @Override
-    public Quiz addQuiz(Quiz quiz) {
-        return quizRepository.save(quiz);
+    public QuizResponse save(Quiz quiz) {
+        return mapToResponse(repository.save(quiz));
     }
 
     @Override
-    public Quiz getQuiz(long id) {
-        return quizRepository.findById(id).get();
+    public QuizResponse findById(long id) {
+        Quiz quiz = repository.findById(id).orElse(null);
+        if (quiz == null) throw new NotFoundException("Quiz introuvable !");
+        return mapToResponse(quiz);
     }
 
     @Override
-    public List<Quiz> getAllQuiz() {
-        return quizRepository.findAll();
+    public List<QuizResponse> findAll() {
+        return mapToResponse(repository.findAll());
     }
 
     @Override
-    public void addQuestionToQuiz(Question question, long id) {
-
-        Quiz quiz = quizRepository.findById(id).get();
-        Question savedquestion = questionRepository.save(question);
-        quiz.getQuestions().add(savedquestion);
-
+    public void addQuestion(long id, Question question) {
+        Quiz quiz = repository.findById(id).orElse(null);
+        if (quiz == null) throw new NotFoundException("Quiz introuvable !");
+        QuestionResponse questionResponse = questionService.save(question);
+        quiz.getQuestions().add(questionRepository.findByName(questionResponse.getName()));
     }
 
     @Override
-    public void addQuestionToQuiz(String question, long id) {
-        Quiz quiz = quizRepository.findById(id).get();
-        Question questionaajoutee = questionRepository.findByQuestion(question);
-        quiz.getQuestions().add(questionaajoutee);
-        quizRepository.save(quiz);
-    }
-
-    @Override
-    public void addQuestionsToQuiz(List<String> questions, long id) {
-        Quiz quiz = quizRepository.findById(id).get();
-        for (String question :
-                questions) {
-            quiz.getQuestions().add(questionRepository.findByQuestion(question));
+    public QuizResponse update(Quiz quiz) {
+        Quiz quizToUpdate = repository.findById(quiz.getId()).orElse(null);
+        if (quizToUpdate == null) throw new NotFoundException("Quiz introuvable !");
+        quizToUpdate.setLabel(quiz.getLabel());
+        if (quiz.getQuestions() != null) {
+            quizToUpdate.getQuestions().clear();
+            quiz.getQuestions().forEach(question -> quizToUpdate.getQuestions().add(question));
         }
-        quizRepository.save(quiz);
+        if (quiz.getGameSessions() != null) {
+            quizToUpdate.getGameSessions().clear();
+            quiz.getGameSessions().forEach(gameSession -> quizToUpdate.getGameSessions().add(gameSession));
+        }
+        return mapToResponse(quizToUpdate);
     }
 
     @Override
-    public Optional<Quiz> updateQuiz(Quiz quiz, long id) {
-        return quizRepository.findById(id).map(
-                quiz1 -> {
-                    quiz1.setLabel(quiz.getLabel());
-                    for (Question question :
-                            quiz.getQuestions()) {
-                        quiz1.getQuestions().add(question);
-                    }
-                    return quizRepository.save(quiz1);
-                }
-        );
+    public void delete(long id) {
+        Quiz quiz = repository.findById(id).orElse(null);
+        if (quiz == null) throw new NotFoundException("Quiz introuvable !");
+        repository.delete(quiz);
     }
 
     @Override
-    public void deleteQuiz(long id) {
-        quizRepository.deleteById(id);
+    public void removeQuestion(long id, Question question) {
+        Quiz quiz = repository.findById(id).orElse(null);
+        if (quiz == null) throw new NotFoundException("Quiz introuvable !");
+        quiz.getQuestions().remove(question);
     }
 
     @Override
-    public void removeQuestionToQuiz(String question, long id) {
-        Question questionaenlever = questionRepository.findByQuestion(question);
-        Quiz quiz = quizRepository.findById(id).get();
-        quiz.getQuestions().remove(questionaenlever);
+    public QuizResponse mapToResponse(Quiz quiz) {
+        return QuizResponse.builder()
+                .id(quiz.getId())
+                .label(quiz.getLabel())
+                .questions(questionService.mapToResponse(quiz.getQuestions()))
+                .gameSessions(gameSessionService.mapToResponse(quiz.getGameSessions()))
+                .build();
+    }
+
+    @Override
+    public List<QuizResponse> mapToResponse(List<Quiz> quizList) {
+        quizList.sort(Comparator.comparing(Quiz::getId).reversed());
+        List<QuizResponse> quizResponses = new ArrayList<>();
+        quizList.forEach(quiz -> quizResponses.add(mapToResponse(quiz)));
+        return quizResponses;
     }
 }

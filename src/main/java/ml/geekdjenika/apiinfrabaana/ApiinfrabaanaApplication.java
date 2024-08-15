@@ -2,7 +2,6 @@ package ml.geekdjenika.apiinfrabaana;
 
 import lombok.ToString;
 import ml.geekdjenika.apiinfrabaana.controllers.AuthController;
-import ml.geekdjenika.apiinfrabaana.models.Category;
 import ml.geekdjenika.apiinfrabaana.enums.ERole;
 import ml.geekdjenika.apiinfrabaana.models.Language;
 import ml.geekdjenika.apiinfrabaana.models.Role;
@@ -48,12 +47,12 @@ public class ApiinfrabaanaApplication {
             defaultuser.setRole(roles);
             authController.registerUser(defaultuser);
 
-            if (categoryRepository.findAll().isEmpty()) {
-                categoryRepository.save(new Category("Gros porteurs"));
-                categoryRepository.save(new Category("Véhicules légers"));
-                categoryRepository.save(new Category("Motos"));
-                categoryRepository.save(new Category("Générales"));
-            }
+//            if (categoryRepository.findAll().isEmpty()) {
+//                categoryRepository.save(new Category("Gros porteurs"));
+//                categoryRepository.save(new Category("Véhicules légers"));
+//                categoryRepository.save(new Category("Motos"));
+//                categoryRepository.save(new Category("Générales"));
+//            }
 
             if (languageRepository.findAll().isEmpty()) {
                 languageRepository.save(new Language("bm"));

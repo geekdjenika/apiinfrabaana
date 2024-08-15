@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TipRepository extends JpaRepository<Tip, Long> {
 
-    Tip findByTip(String tip);
+    Tip findByDescription(String description);
 }

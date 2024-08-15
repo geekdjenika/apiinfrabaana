@@ -45,7 +45,7 @@ public class User {
 
     private String image;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "user")
     private List<Notification> notifications = new ArrayList<>();
 
     @ManyToMany

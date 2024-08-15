@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface VocalRepository extends JpaRepository<Vocal, Long> {
-    Vocal findByVocal(String vocal);
+    Vocal findByName(String name);
     List<Vocal> findByLanguage(Language language);
 }
