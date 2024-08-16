@@ -29,7 +29,21 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryResponse save(Category category) {
+        Category existingCategory = repository.findByName(category.getName());
+        if (existingCategory != null)
+            throw new NotFoundException("Cette catégorie existe déjà !");
         return mapToResponse(repository.save(category));
+    }
+
+    @Override
+    public CategoryResponse update(Category category) {
+        Category categoryToUpdate = repository.findById(category.getId()).orElse(null);
+        if (categoryToUpdate == null) throw new NotFoundException("Catégorie introuvable !");
+        Category existingCategory = repository.findByName(category.getName());
+        if (existingCategory != null)
+            throw new NotFoundException("Cette catégorie existe déjà !");
+        categoryToUpdate.setName(category.getName());
+        return mapToResponse(repository.save(categoryToUpdate));
     }
 
     @Override
@@ -42,6 +56,13 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = repository.findById(id).orElse(null);
         if (category == null) throw new NotFoundException("Cette catégorie n'existe pas !");
         return mapToResponse(category);
+    }
+
+    @Override
+    public void delete(long id) {
+        Category category = repository.findById(id).orElse(null);
+        if (category == null) throw new NotFoundException("Cette catégorie n'existe pas !");
+        repository.delete(category);
     }
 
     @Override
