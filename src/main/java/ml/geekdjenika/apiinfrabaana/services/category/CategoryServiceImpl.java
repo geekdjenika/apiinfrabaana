@@ -98,6 +98,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .id(category.getId())
                 .name(category.getName())
                 .fines(fineResponses)
+                .infringements(infringementService.mapToResponse(category.getInfringements()))
                 .build();
     }
 }
