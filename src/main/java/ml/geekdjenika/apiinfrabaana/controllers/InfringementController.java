@@ -17,7 +17,7 @@ public class InfringementController {
 
     private final InfringementService service;
 
-    @PostMapping("/add/{id}")
+    @PostMapping
     @PostAuthorize("hasAuthority('ADMIN')")
     public InfringementResponse save(@RequestBody Infringement infringement) {
         return service.save(infringement);
@@ -37,11 +37,11 @@ public class InfringementController {
 
     @PutMapping
     @PostAuthorize("hasAuthority('ADMIN')")
-    public InfringementResponse update(Infringement infringement) {
+    public InfringementResponse update(@RequestBody Infringement infringement) {
         return service.update(infringement);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @PostAuthorize("hasAuthority('ADMIN')")
     public void delete(@PathVariable long id) {
         service.delete(id);
