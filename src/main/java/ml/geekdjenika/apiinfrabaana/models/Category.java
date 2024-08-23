@@ -25,4 +25,7 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
     private List<Fine> fines = new ArrayList<>();
 
+    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
+    private List<Infringement> infringements = new ArrayList<>();
+
 }

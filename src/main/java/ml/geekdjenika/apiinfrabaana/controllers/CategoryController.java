@@ -23,6 +23,12 @@ public class CategoryController {
         return service.save(category);
     }
 
+    @PutMapping("")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public CategoryResponse update(@RequestBody Category category) {
+        return service.update(category);
+    }
+
     @GetMapping("/all")
     @PostAuthorize("hasAuthority('USER')")
     public List<CategoryResponse> findAll() {
@@ -33,6 +39,12 @@ public class CategoryController {
     @PostAuthorize("hasAuthority('USER')")
     public CategoryResponse findById(@PathVariable long id) {
         return service.findById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public void delete(@PathVariable long id) {
+        service.delete(id);
     }
 
 }
