@@ -26,6 +26,9 @@ public class Infringement {
 
     private String reference;
 
+    @ManyToMany
+    private List<Fine> fines = new ArrayList<>();
+
     @ManyToOne
     private Category category;
 
