@@ -19,7 +19,7 @@ public class Amount {
     private long id;
 
     @Column(unique = true)
-    private long value;
+    private double value;
 
     private String currency;
 }

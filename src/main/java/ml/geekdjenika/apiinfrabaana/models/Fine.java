@@ -28,13 +28,9 @@ public class Fine {
     @ManyToOne
     private Amount amount;
 
-    @OneToMany(mappedBy = "fine", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "fine", cascade = CascadeType.ALL)
     private List<Vocal> vocals = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "fines")
     private List<Infringement> infringements = new ArrayList<>();
-
-    public Fine(long id) {
-        this.id = id;
-    }
 }

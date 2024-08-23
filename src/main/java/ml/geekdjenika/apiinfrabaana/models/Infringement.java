@@ -26,7 +26,7 @@ public class Infringement {
 
     private String reference;
 
-    @ManyToMany(mappedBy = "infringements", cascade = CascadeType.REMOVE)
+    @ManyToMany
     private List<Fine> fines = new ArrayList<>();
 
     @ManyToOne

@@ -12,6 +12,11 @@ public interface InfringementService {
     InfringementResponse findById(long id);
     List<InfringementResponse> findAll();
     List<InfringementResponse> findByCategoryName(String name);
+
+    void setFines(Infringement infringement, Infringement infringementToUpdate);
+
+    void setVocals(Infringement infringement, Infringement infringementToUpdate);
+
     void delete(long id);
     InfringementResponse mapToResponse(Infringement infringement);
     List<InfringementResponse> mapToResponse(List<Infringement> infringements);
