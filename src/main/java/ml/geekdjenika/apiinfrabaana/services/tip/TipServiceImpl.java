@@ -73,7 +73,7 @@ public class TipServiceImpl implements TipService {
         return TipResponse.builder()
                 .id(tip.getId())
                 .description(tip.getDescription())
-                .vocals(vocalService.mapToResponse(tip.getVocals()))
+                .vocals(tip.getVocals() == null ? null : vocalService.mapToResponse(tip.getVocals()))
                 .infringements(infringementResponses)
                 .build();
     }
